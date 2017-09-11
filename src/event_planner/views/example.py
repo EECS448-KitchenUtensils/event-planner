@@ -1,7 +1,5 @@
-from .. import app
+from .. import app, render_template, url_for
 
 @app.route("/example")
 def hello():
-    return '''
-    <button class='btn btn-primary'>hello</button>
-    '''
+    return render_template('example.html')

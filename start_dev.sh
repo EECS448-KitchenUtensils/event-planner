@@ -4,4 +4,4 @@
 export FLASK_APP=event_planner
 export FLASK_DEBUG=True
 export PYTHONPATH=$PYTHONPATH:`pwd`/src
-flask run
+flask run -h 0.0.0.0

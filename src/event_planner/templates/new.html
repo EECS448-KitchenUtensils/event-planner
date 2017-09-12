@@ -1,8 +1,17 @@
 {% include 'header.html' %}
 <h1>Where we will make new events.</h1>
 
+    <div class="conatiner">
+        <form class="col-sm-7 mx-auto">
+            <input type="text" name="name" placeholder="Event Name" class="form-control" />
+            <br />
+            <input type="date" name="date" placeholder="Date of Event" class="form-control date-picker" />
+            <input type="submit" value="GOOOOOO" class="btn btn-primary my-3 float-right">
+        </form>
+    </div>
 
 <script>
-    $("#\\/").addClass('active')
+    $("#new").addClass('active')
+    $(".date-picker").datepicker()
 </script>
 {% include 'footer.html' %}

@@ -11,3 +11,5 @@ class Event(object):
         """A list of TimeRange of the timeslots for this event"""
         self.participants = []
         """A list of Participants for this event"""
+        self.name = ""
+        """Name given to an event by an admin"""

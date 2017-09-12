@@ -1,5 +1,5 @@
 #!python
 
-from . import example
+from . import routes
 
-__all__ = ["example"]
+__all__ = ["routes"]

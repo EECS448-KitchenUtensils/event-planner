@@ -73,3 +73,6 @@ Implementation
 * SQLAlchemy (Models)
 * SQLite3 (Database)
 * Jinja2 (Templates)
+* JQuery & JQuery UI (DOM Manipulation)
+* Bootstrap 4 (CSS Framework)
+

@@ -1,5 +1,5 @@
 from .. import db
-from . EventParticipants import EventParticipants
+from . Participant import Participant
 class Event(db.Model):
     """
     Database model for events
@@ -14,5 +14,4 @@ class Event(db.Model):
     """Date of this event"""
     admin_link = db.Column(db.Text)
     """Magic admin code for this event"""
-    participants = db.relationship("EventParticipants",
-        secondary=EventParticipants)
+    participants = db.relationship("Participant")

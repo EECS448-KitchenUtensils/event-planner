@@ -10,4 +10,5 @@ def new():
 
 @app.route("/event/<event_id>")
 def show_event(event_id):
-    return 'Event %d' % event_id
+    # events.where(event.id == event_id)
+    return render_template('event.html', event_id=event_id)

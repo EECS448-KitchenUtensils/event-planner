@@ -1,5 +1,9 @@
-{%include 'header.html'%}
+
 <div class="container text-center">
-    <h1>Event id: {{event_id}}</h1>
+    <h1 class="my-3">{{ event['name'] }} on {{ event['time'] }}</h1>
+    <p class="lead">{{ event['desc'] }}</p>
+    <hr>
+    {% for participant in event['participants'] %}
+        <p>{{ participant[0] }} is going from {{ participant[1] }}</p>
+    {% endfor %}
 </div>
-{%include 'footer.html'%}

@@ -1,7 +1,15 @@
 from .. import db
 class Event(db.Model):
+    """
+    Database model for events
+    """
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    description = db.Column(db.String)
+    """Primary key (database detail)"""
+    title = db.Column(db.Text)
+    """Title of this event"""
+    description = db.Column(db.Text)
+    """Description of this event"""
     date = db.Column(db.Date)
-    admin_link = db.Column(db.String)
+    """Date of this event"""
+    admin_link = db.Column(db.Text)
+    """Magic admin code for this event"""

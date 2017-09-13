@@ -1,3 +1,3 @@
 $('.eventcard').click(function(){
-    window.location.replace("/event");
+    window.location.replace("/event/asdf");
 })

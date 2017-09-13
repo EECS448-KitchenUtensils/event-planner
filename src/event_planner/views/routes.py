@@ -10,10 +10,6 @@ def new():
     daterange = enumerate(daterange)
     return render_template('new.html', daterange=daterange)
 
-@app.route("/event")
-def event():
-    return render_template("event.html")
-
 @app.route("/event/<event_id>")
 @app.route("/event/<event_id>/<event_auth_token>")
 def show_event(event_id=None, event_auth_token=None):

@@ -1,5 +1,23 @@
 *{
     margin:0;
     padding:0;
+    list-style: none;
 }
 
+.centertext{
+    text-align: center;
+    padding: 20px;
+}
+
+.buttons{
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.introtext{
+    display: block;
+    text-align: center;
+    padding-bottom: 5%;
+}

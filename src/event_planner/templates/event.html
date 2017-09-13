@@ -1,3 +1,5 @@
+<!-- Pull event information -->
+
 <div class="centertext align-items-center"></div>
 <div class="container">
     <div class="introtext">
@@ -6,10 +8,21 @@
     <h4>{{ event['time'] }}</h4>
     </div>
 
+<!-- Create particpant table for viewing -->
+
     <div class="participanttable">
-        {% for p in event[participants] %} 
-        <p>{{ event[participants][p][0] }}</p>
-            {% endfor %}
+        {% for p in event['participants'] %} 
+        <p>{{ p[0] }}</p>
+        {% endfor %}
     </div>
+
+<!-- Form for adding participant -->
+
+    <form class="col-sm-3 mx-auto" method="POST">
+        <input type="text" name="participantname" placeholder="Participant Name" class="form-control" />
+        <br/>
+        <!-- TODO - ADD DATE SELECTOR -->
+        <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
+    </form>
 
 </div>

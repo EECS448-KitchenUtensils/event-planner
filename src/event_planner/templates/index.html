@@ -7,16 +7,18 @@
         </div>
 
         <!-- List Cards for all events in the database -->
-        {# % for event in get_event_summaries() % #}
+        {% for event in events %}
+        <div style="padding-bottom: 3%;">
         <div class="eventcard">
-                <h4><b>Event</b></h4>
-                <p>Times: Time</p>
+                <h4><b>{{ event['name'] }}</b></h4>
+                <p>{{ event['date'] }}</p>
                 <div class="container">
-                  <p>Event Creator Name</p>
-                  <p></p>
+                  <p> {{ event['description'] }} </p>
+                  <p> {{ event['admin'] }}</p>
                 </div>
         </div>
-        {# % endfor % #}
+        </div>
+        {% endfor %}
 
 
         <!--<p style="padding-top: 40px;">Created by:</p>

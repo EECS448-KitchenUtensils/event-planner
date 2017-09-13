@@ -1,6 +1,6 @@
 *{
     margin:0;
-    padding:0;
+    padding: 0;
     list-style: none;
 }
 
@@ -20,6 +20,7 @@
     display: block;
     text-align: center;
     padding-bottom: 3%;
+    
 }
 
 .timeslot-picker{

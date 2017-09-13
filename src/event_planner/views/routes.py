@@ -2,7 +2,22 @@ from .. import db, models, app, render_template, url_for, request
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    event = {}
+    event['name'] = "Software Party!"
+    event['date'] = '9/18/2017'
+    event['description'] = "Software party for the EECS 448 students."
+    event['admin'] = "Kitchen Utensils Team"
+
+    #TESTING
+    event1 = {}
+    event1['name'] = "Dinner Date"
+    event1['date'] = '9/19/2017'
+    event1['description'] = "Dinner date with the finest utensils"
+    event1['admin'] = "Gerald Moneybaby"
+
+    events = (event, event1)
+
+    return render_template('index.html', events=events)
 
 @app.route("/new", methods=['POST', 'GET'])
 def new():

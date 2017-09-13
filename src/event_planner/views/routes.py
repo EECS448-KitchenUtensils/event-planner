@@ -1,4 +1,5 @@
 from .. import db, models, app, render_template, url_for, request
+from datetime import date as dt
 
 @app.route("/")
 def index():
@@ -25,16 +26,19 @@ def new():
         name = request.form['eventname']
         desc = request.form['eventdescription']
         admin = request.form['adminname']
-        dt = request.form['date']
 
-        event = models.Event(title = name, description = desc, admin_link = admin, date = dt)
+        month, day, year = request.form['date'].split('/')
+        event_date = dt(int(year), int(month), int(day))
+
+        event = models.Event(title = name, description = desc, date = event_date)
+        # needs to add participants and timeslots
 
         slotdata = []
         for x in range(0,47):
             slotdata.append(request.form['slot_%s' % x])
 
-        # db.session.add(event)
-        # db.session.commit()
+        db.session.add(event)
+        db.session.commit()
 
         return render_template('index.html')
 

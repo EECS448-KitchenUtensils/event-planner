@@ -5,9 +5,9 @@ EECS 448 Project 1 (Fall 2017)
 Design
 ====================
 
-MVC Pattern
+MMVC Pattern
 ^^^^^^^^^^^^^
-* Models
+* Database Models
     * events
         * Fields
             * title: *string*
@@ -32,7 +32,25 @@ MVC Pattern
         * Fields
             * part_id: *uuid, foreign key*
             * timeslot: *enum(Timeslot)*
-
+* Application Models
+    * Event
+        * Properties
+            * admin_link
+            * title
+            * description
+        * Instance methods
+            * setters for properties
+            * getter for related participants
+            * setter for relating participants
+        * Static methods
+            * Get all events
+            * 
+    * Participant
+        * Properties
+            * name
+            * timeslots
+        * Instance methods
+            * setter for timeslots
 * Views
 * Controllers
 

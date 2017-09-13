@@ -7,7 +7,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
 #Start SQLAlchemy
 db = SQLAlchemy(app)
 #The imports come later so that the app and db objects are in existence
-#from . import models
+from . import models
 from . import views
 #TODO: move migrations out
 db.create_all()

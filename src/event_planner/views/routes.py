@@ -1,4 +1,4 @@
-from .. import app, render_template, url_for, request
+from .. import db, models, app, render_template, url_for, request
 
 @app.route("/")
 def index():
@@ -7,11 +7,18 @@ def index():
 @app.route("/new", methods=['POST', 'GET'])
 def new():
     if request.method == "POST":
+        name = request.form['eventname']
+        desc = request.form['eventdescription']
+        admin = request.form['adminname']
+        dt = request.form['date']
+
+        event = models.Event(title = name, description = desc, admin_link = admin, date = dt)
+
         slotdata = []
         for x in range(0,47):
             slotdata.append(request.form['slot_%s' % x])
 
-        # db.session.add(slotdata)
+        # db.session.add(event)
         # db.session.commit()
 
         return render_template('index.html')

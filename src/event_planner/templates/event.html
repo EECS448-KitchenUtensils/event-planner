@@ -1,13 +1,15 @@
 <div class="centertext align-items-center"></div>
 <div class="container">
     <div class="introtext">
-    <h1>Event Name</h1>
-    <h2>Host</h2>
-    <h4>Date</h4>
+    <h1>{{ event['name'] }}</h1>
+    <h2>{{ event['participants'][0][0] }}</h2>
+    <h4>{{ event['time'] }}</h4>
     </div>
 
     <div class="participanttable">
-        
+        {% for p in event[participants] %} 
+        <p>{{ event[participants][p][0] }}</p>
+            {% endfor %}
     </div>
 
 </div>

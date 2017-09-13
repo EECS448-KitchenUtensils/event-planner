@@ -3,7 +3,12 @@
     <head>
         <title>Event Planner</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">    </head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>        
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    </head>
+
     <body>
         <nav class="navbar navbar-toggleable-md navbar-light bg-success">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,10 +17,10 @@
             <a class="navbar-brand" href="#">EventPlanner</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                <li class="nav-item" id="/">
+                <li class="nav-item" id="home">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item" id="/new">
+                <li class="nav-item" id="new">
                     <a class="nav-link" href="/new">New Event</a>
                 </li>
                 </ul>

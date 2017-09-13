@@ -7,3 +7,7 @@ def index():
 @app.route("/new")
 def new():
     return render_template('new.html')
+
+@app.route("/event/<event_id>")
+def show_event(event_id):
+    return 'Event %d' % event_id

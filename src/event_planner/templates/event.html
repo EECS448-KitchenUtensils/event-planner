@@ -1,0 +1,9 @@
+
+<div class="container text-center">
+    <h1 class="my-3">{{ event['name'] }} on {{ event['time'] }}</h1>
+    <p class="lead">{{ event['desc'] }}</p>
+    <hr>
+    {% for participant in event['participants'] %}
+        <p>{{ participant[0] }} is going from {{ participant[1] }}</p>
+    {% endfor %}
+</div>

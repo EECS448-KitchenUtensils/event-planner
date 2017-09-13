@@ -9,5 +9,5 @@ class Participant(db.Model):
     """Reference back to the parent event"""
     name = db.Column(db.Text)
     """Name of this event"""
-    timeslots = db.relationship("ParticipantTimeslots")
+    timeslots = db.relationship("Timeslot")
     """Timeslots that this participant is available"""

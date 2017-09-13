@@ -1,12 +1,120 @@
 {% include 'header.html' %}
-<h1>Where we will make new events.</h1>
+<h1>Create a New Event</h1>
 
     <div class="conatiner">
-        <form class="col-sm-7 mx-auto">
-            <input type="text" name="name" placeholder="Event Name" class="form-control" />
+        <form class="col-sm-10 mx-auto">
+            <input type="text" name="eventname" placeholder="Event Name" class="form-control" />
+            <br />
+            <input type="text" name="eventdescription" placeholder="Event Description" class="form-control" />
+            <br />
+            <input type="text" name="adminname" placeholder="Your Name" class="form-control" />
             <br />
             <input type="date" name="date" placeholder="Date of Event" class="form-control date-picker" />
-            <input type="submit" value="GOOOOOO" class="btn btn-primary my-3 float-right">
+          <div class="checkboxes col-sm10 mx-auto">
+                  <label for="timeslot_0">12:00AM</label>
+                  <input type="checkbox" name="timeslot_0" value="0">
+                  <label for="timeslot_1">12:30AM</label>
+                  <input type="checkbox" name="timeslot_1" value="0">
+                  <label for="timeslot_2">1:00AM</label>
+                  <input type="checkbox" name="timeslot_2" value="0">
+                  <label for="timeslot_3">1:30AM</label>
+                  <input type="checkbox" name="timeslot_3" value="0">
+                  <label for="timeslot_4">2:00AM</label>
+                  <input type="checkbox" name="timeslot_4" value="0">
+                  <label for="timeslot_5">2:30AM</label>
+                  <input type="checkbox" name="timeslot_5" value="0">
+                  <label for="timeslot_6">3:00AM</label>
+                  <input type="checkbox" name="timeslot_6" value="0">
+                  <label for="timeslot_7">3:30AM</label>
+                  <input type="checkbox" name="timeslot_7" value="0">
+                  <label for="timeslot_8">4:00AM</label>
+                  <input type="checkbox" name="timeslot_8" value="0">
+                  <label for="timeslot_9">4:30AM</label>
+                  <input type="checkbox" name="timeslot_9" value="0">
+                  <label for="timeslot_10">5:00AM</label>
+                  <input type="checkbox" name="timeslot_10" value="0">
+                  <label for="timeslot_11">5:30AM</label>
+                  <input type="checkbox" name="timeslot_11" value="0">
+            </div>
+            <div class="checkboxes">
+                  <label for="timeslot_12">6:00AM</label>
+                  <input type="checkbox" name="timeslot_12" value="0">
+                  <label for="timeslot_13">6:30AM</label>
+                  <input type="checkbox" name="timeslot_13" value="0">
+                  <label for="timeslot_14">7:00AM</label>
+                  <input type="checkbox" name="timeslot_14" value="0">
+                  <label for="timeslot_15">7:30AM</label>
+                  <input type="checkbox" name="timeslot_15" value="0">
+                  <label for="timeslot_16">8:00AM</label>
+                  <input type="checkbox" name="timeslot_16" value="0">
+                  <label for="timeslot_17">8:30AM</label>
+                  <input type="checkbox" name="timeslot_17" value="0">
+                  <label for="timeslot_18">9:00AM</label>
+                  <input type="checkbox" name="timeslot_18" value="0">
+                  <label for="timeslot_19">9:30AM</label>
+                  <input type="checkbox" name="timeslot_19" value="0">
+                  <label for="timeslot_20">10:00AM</label>
+                  <input type="checkbox" name="timeslot_20" value="0">
+                  <label for="timeslot_21">10:30AM</label>
+                  <input type="checkbox" name="timeslot_21" value="0">
+                  <label for="timeslot_22">11:00AM</label>
+                  <input type="checkbox" name="timeslot_22" value="0">
+                  <label for="timeslot_23">11:30AM</label>
+                  <input type="checkbox" name="timeslot_23" value="0">
+          </div>
+          <div class="checkboxes">
+                <label for="timeslot_24">12:00PM</label>
+                <input type="checkbox" name="timeslot_24" value="0">
+                <label for="timeslot_25">12:30PM</label>
+                <input type="checkbox" name="timeslot_25" value="0">
+                <label for="timeslot_26">1:00PM</label>
+                <input type="checkbox" name="timeslot_26" value="0">
+                <label for="timeslot_27">1:30PM</label>
+                <input type="checkbox" name="timeslot_27" value="0">
+                <label for="timeslot_28">2:00PM</label>
+                <input type="checkbox" name="timeslot_28" value="0">
+                <label for="timeslot_29">2:30PM</label>
+                <input type="checkbox" name="timeslot_29" value="0">
+                <label for="timeslot_30">3:00PM</label>
+                <input type="checkbox" name="timeslot_30" value="0">
+                <label for="timeslot_31">3:30PM</label>
+                <input type="checkbox" name="timeslot_31" value="0">
+                <label for="timeslot_32">4:00PM</label>
+                <input type="checkbox" name="timeslot_32" value="0">
+                <label for="timeslot_33">4:30PM</label>
+                <input type="checkbox" name="timeslot_33" value="0">
+                <label for="timeslot_34">5:00PM</label>
+                <input type="checkbox" name="timeslot_34" value="0">
+                <label for="timeslot_35">5:30PM</label>
+                <input type="checkbox" name="timeslot_35" value="0">
+        </div>
+        <div class="checkboxes">
+                <label for="timeslot_36">6:00PM</label>
+                <input type="checkbox" name="timeslot_37" value="0">
+                <label for="timeslot_37">6:30PM</label>
+                <input type="checkbox" name="timeslot_37" value="0">
+                <label for="timeslot_38">7:00PM</label>
+                <input type="checkbox" name="timeslot_38" value="0">
+                <label for="timeslot_39">7:30PM</label>
+                <input type="checkbox" name="timeslot_39" value="0">
+                <label for="timeslot_40">8:00PM</label>
+                <input type="checkbox" name="timeslot_40" value="0">
+                <label for="timeslot_41">8:30PM</label>
+                <input type="checkbox" name="timeslot_41" value="0">
+                <label for="timeslot_42">9:00PM</label>
+                <input type="checkbox" name="timeslot_42" value="0">
+                <label for="timeslot_43">9:30PM</label>
+                <input type="checkbox" name="timeslot_43" value="0">
+                <label for="timeslot_44">10:00PM</label>
+                <input type="checkbox" name="timeslot_44" value="0">
+                <label for="timeslot_45">10:30PM</label>
+                <input type="checkbox" name="timeslot_45" value="0">
+                <label for="timeslot_46">11:00PM</label>
+                <input type="checkbox" name="timeslot_46" value="0">
+                <label for="timeslot_47">11:30PM</label>
+                <input type="checkbox" name="timeslot_47" value="0">
+        </div>
+            <input type="submit" value="Submit" class="btn btn-primary my-3 float-right">
         </form>
     </div>
 

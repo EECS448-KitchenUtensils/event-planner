@@ -32,17 +32,17 @@ def new_get():
 
 @app.route("/new", methods=['POST'])
 def new_post():
-    error = false
+    error = False
     name = request.form['eventname']
     if name == "" or name.isspace():
-        error = true
+        error = True
         flash("The event name is empty.")
 
     desc = request.form['eventdescription']
 
     admin = request.form['adminname']
     if admin == "" or name.isspace():
-        error = true
+        error = True
         flash("The admin's name is required")
 
 
@@ -79,13 +79,13 @@ def show_event_get(event_id=None):
 
 
 @app.route("/event/<event_id>", methods=['POST'])
-def show_event_get(event_id=None):
+def show_event_post(event_id=None):
     """ POST - user adds participation """
 
-@app.route("/event/<event_id>/<event_auth_token>")
+@app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
 def show_event_get_admin(event_id=None, event_auth_token=None):
     """ GET - admin view """
 
-@app.route("/event/<event_id>/<event_auth_token>")
-def show_event_get_admin(event_id=None, event_auth_token=None):
+@app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
+def show_event_post_admin(event_id=None, event_auth_token=None):
     """ POST - admin changes """

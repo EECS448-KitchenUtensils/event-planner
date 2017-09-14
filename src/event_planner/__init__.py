@@ -1,9 +1,9 @@
 from flask import Flask, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
+from . import defaults
 #Define the global flask app
 app = Flask(__name__)
-#TODO: load config from somewhere else
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
+app.config.from_object(defaults)
 #Start SQLAlchemy
 db = SQLAlchemy(app)
 #The imports come later so that the app and db objects are in existence

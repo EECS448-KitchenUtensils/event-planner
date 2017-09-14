@@ -77,7 +77,9 @@ def new_post():
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id):
     """ GET - user view """
+    
     events = models.Event.query.filter(id == event_id).first()
+    print events
 
 
     # events.where(event.id == event_id)

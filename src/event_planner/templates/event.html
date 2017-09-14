@@ -3,18 +3,18 @@
 <div class="centertext align-items-center"></div>
 <div class="container">
     <div class="introtext">
-    <h1>{{ event['name'] }}</h1>
-    <h2>{{ event['participants'][0][0] }}</h2>
-    <h4>{{ event['time'] }}</h4>
+    <h1>{{ event['title'] }}</h1>
+    <!--{#<h2>{{ event['participants'][0][0] }}</h2>#}-->
+    <h4>{{ event['date'] }}</h4>
     </div>
 
 <!-- Create particpant table for viewing -->
 
-    <div class="participanttable">
+   <!--{# <div class="participanttable">
         {% for p in event['participants'] %} 
         <p>{{ p[0] }}</p>
         {% endfor %}
-    </div>
+    </div>#}-->
 
 <!-- Form for adding participant -->
 

@@ -3,15 +3,15 @@
 <div class="centertext align-items-center"></div>
 <div class="container">
     <div class="introtext">
-    <h1>{{ event['name'] }}</h1>
-    <h2>{{ event['participants'][0][0] }}</h2>
-    <h4>{{ event['time'] }}</h4>
+        <h1>{{ event['name'] }}</h1>
+        <h2>{{ event['participants'][0][0] }}</h2>
+        <h4>{{ event['time'] }}</h4>
     </div>
 
 <!-- Create particpant table for viewing -->
 
     <div class="participanttable">
-        {% for p in event['participants'] %} 
+        {% for p in event['participants'] %}
         <p>{{ p[0] }}</p>
         {% endfor %}
     </div>
@@ -21,8 +21,83 @@
     <form class="col-sm-3 mx-auto" method="POST">
         <input type="text" name="participantname" placeholder="Participant Name" class="form-control" />
         <br/>
-        <!-- TODO - ADD DATE SELECTOR -->
+        
+        <div class="container text-center">
+            <h1>Create a New Event</h1>
+            <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
+
+            <div class="conatiner 12-hour-form">
+                <form class="col-sm-10 mx-auto" method="POST">
+                    <p>Time slots are 30 minutes long and begin at indicated time.</p>
+                    <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
+
+                    <div class="timeslot-picker">
+                        {% for i, date in daterange %}
+                            <div class="timeslot">
+                                {{ date }}
+                                <input type="hidden" name="slot_{{ i }}" value='0'>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
+                </form>
+            </div>
+
+            <div class="conatiner 24-hour-form">
+                <form class="col-sm-10 mx-auto" method="POST">
+                    <input type="text" name="eventname" placeholder="Event Name" class="form-control" />
+                    <br />
+                    <input type="text" name="eventdescription" placeholder="Event Description" class="form-control" />
+                    <br />
+                    <input type="text" name="adminname" placeholder="Your Name" class="form-control" />
+                    <br />
+                    <input type="date" name="date" placeholder="Date of Event" class="form-control date-picker" />
+                    <br />
+                    <p>Time slots are 30 minutes long and begin at indicated time.</p>
+
+                    <div class="timeslot-picker">
+                        {% for i, date in daterange24 %}
+                            <div class="timeslot">
+                                {{ date }}
+                                <input type="hidden" name="slot_{{ i }}" value='0'>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
+                </form>
+            </div>
+
+        </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>
 
 </div>
+<script>
+    $("#new").addClass('active')
+    $(".date-picker").datepicker()
+    $(".24-hour-form").hide();
+
+    $('.toggle-time-button').on('click', function(e){
+        e.preventDefault()
+        $('.24-hour-form').toggle()
+        $('.12-hour-form').toggle()
+    });
+
+    $('.timeslot-picker').selectable({
+        selected: function(event, ui){
+            $(ui.selected).addClass('active')
+            $(ui.selected).removeClass('selecting')
+            $(ui.selected).children('input').val('1')
+        },
+        unselected: function(event, ui){
+            $(ui.unselected).removeClass('active')
+            $(ui.unselected).removeClass('selecting')
+            $(ui.unselected).children('input').val('0')
+        },
+        selecting: function(event, ui){
+            $(ui.selecting).addClass('selecting')
+        }
+    });
+</script>

@@ -48,8 +48,8 @@ def new():
     daterange24 = enumerate(daterange24)
     return render_template('new.html', daterange=daterange, daterange24=daterange24)
 
-@app.route("/event/<event_id>")
-@app.route("/event/<event_id>/<event_auth_token>")
+@app.route("/event/<event_id>", methods=['POST', 'GET'])
+@app.route("/event/<event_id>/<event_auth_token>", methods=['POST', 'GET'])
 def show_event(event_id=None, event_auth_token=None):
 
     # events.where(event.id == event_id)

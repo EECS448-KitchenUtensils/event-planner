@@ -46,16 +46,9 @@
 
             <div class="conatiner 24-hour-form">
                 <form class="col-sm-10 mx-auto" method="POST">
-                    <input type="text" name="eventname" placeholder="Event Name" class="form-control" />
-                    <br />
-                    <input type="text" name="eventdescription" placeholder="Event Description" class="form-control" />
-                    <br />
-                    <input type="text" name="adminname" placeholder="Your Name" class="form-control" />
-                    <br />
-                    <input type="date" name="date" placeholder="Date of Event" class="form-control date-picker" />
-                    <br />
                     <p>Time slots are 30 minutes long and begin at indicated time.</p>
-
+                    <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
+                    
                     <div class="timeslot-picker">
                         {% for i, date in daterange24 %}
                             <div class="timeslot">

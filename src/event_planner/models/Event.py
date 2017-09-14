@@ -15,3 +15,9 @@ class Event(db.Model):
     admin_link = db.Column(db.Text)
     """Magic admin code for this event"""
     participants = db.relationship("Participant")
+    def __init__(self, title, description, date):
+        """Creates a new Event instance"""
+        self.title = title
+        self.description = description
+        self.date = date
+        self.admin_link = "foo"

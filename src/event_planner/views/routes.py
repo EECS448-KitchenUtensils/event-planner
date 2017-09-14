@@ -63,8 +63,10 @@ def new_post():
     return render_template('index.html')
 
 @app.route("/event/<event_id>", methods=['GET'])
-def show_event_get(event_id=None):
+def show_event_get(event_id):
     """ GET - user view """
+    events = models.Event.query.filter(id == event_id).first()
+
 
     # events.where(event.id == event_id)
     event = {}
@@ -73,10 +75,7 @@ def show_event_get(event_id=None):
     event['time'] = '6/9/6969'
     event['participants'] = [('Jenny Swepack', '1-4'), ('Gerald Moneybaby', '6-5')]
 
-    if event_auth_token == None:
-        return render_template('event_view.html', event=event)
-    else:
-        return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+    return render_template('event_view.html', event=events)
 
 
 @app.route("/event/<event_id>", methods=['POST'])

@@ -81,3 +81,8 @@
     margin:auto;
     z-index: 1000;
 }
+
+.hidden-link, .hidden-link:active, .hidden-link:hover, .hidden-link:visited{
+    text-decoration: none;
+    color: black;
+}

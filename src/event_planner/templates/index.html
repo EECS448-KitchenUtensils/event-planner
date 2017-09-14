@@ -8,16 +8,16 @@
 
         <!-- List Cards for all events in the database -->
         {% for event in events %}
-        <div style="padding-bottom: 3%;">
-        <div class="eventcard">
-                <h4><b>{{ event['name'] }}</b></h4>
-                <p>{{ event['date'] }}</p>
-                <div class="container">
-                  <p> {{ event['description'] }} </p>
-                  <p> {{ event['admin'] }}</p>
-                </div>
-        </div>
-        </div>
+        <a href="/event/{{ event['id'] }}" class="hidden-link">
+            <div class="eventcard py-3">
+                    <h4><b>{{ event['title'] }}</b></h4>
+                    <p>{{ event['date'] }}</p>
+                    <div class="container">
+                    <p> {{ event['description'] }} </p>
+                    <p> {{ event['admin'] }}</p>
+                    </div>
+            </div>
+        </a>
         {% endfor %}
 
 

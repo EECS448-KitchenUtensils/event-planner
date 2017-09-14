@@ -83,6 +83,16 @@ def show_event_get(event_id=None):
 @app.route("/event/<event_id>", methods=['POST'])
 def show_event_post(event_id=None):
     """ POST - user adds participation """
+    name = request.form["participantname"]
+
+    slotdata = []
+    for x in range(0,47):
+        slotdata.append(request.form['slot_%s' % x])
+
+    # TODO Figure out how to store the time request and participant name in the database
+    #db.session.add(event)
+    #db.session.commit()
+
     # events.where(event.id == event_id)
     event = {}
     event['name'] = 'Foobar rally'
@@ -112,11 +122,13 @@ def show_event_get_admin(event_id=None, event_auth_token=None):
     daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
     daterange = enumerate(daterange)
 
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
 
 @app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
 def show_event_post_admin(event_id=None, event_auth_token=None):
     """ POST - admin changes """
+    # TODO pull in all data about the event and put in the database
+
     # events.where(event.id == event_id)
     event = {}
     event['name'] = 'Foobar rally'
@@ -129,4 +141,4 @@ def show_event_post_admin(event_id=None, event_auth_token=None):
     daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
     daterange = enumerate(daterange)
 
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)

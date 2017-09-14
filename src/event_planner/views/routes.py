@@ -1,5 +1,5 @@
 from .. import db, models, app, render_template, url_for, request
-from flask import flash
+from flask import flash, redirect
 from datetime import date as dt
 
 @app.route("/")
@@ -32,7 +32,10 @@ def new_get():
 
 @app.route("/new", methods=['POST'])
 def new_post():
+    #Variable for recording error in form parsing to prevent back commit to db
     error = False
+
+    #Check basic for elements (Besides time slot)
     name = request.form['eventname']
     if name == "" or name.isspace():
         error = True
@@ -45,22 +48,31 @@ def new_post():
         error = True
         flash("The admin's name is required")
 
+    try:
+        month, day, year = request.form['date'].split('/')
+        event_date = dt(int(year), int(month), int(day))
+    except:
+        error = True
+        flash('Date empty or format error')
 
-    month, day, year = request.form['date'].split('/')
-    event_date = dt(int(year), int(month), int(day))
-
-    event = models.Event(title = name, description = desc, date = event_date)
-    # needs to add participants and timeslots
-
+    #Parse and check timeslot elements
+    slotdata_error_flag = False
     slotdata = []
     for x in range(0,47):
+        if request.form['slot_%s' % x] != 0 or request.form['slot_%s' % x] != 1:
+            slotdata_error_flag == True
         slotdata.append(request.form['slot_%s' % x])
+    if slotdata_error_flag:
+        error = True
+        flash('Internal parsing error (Timeslot form elements corrupt)')
 
-    #db.session.add(event)
-    #db.session.commit()
+    #commit to db if no error.
+    if not error:
+        event = models.Event(name, desc, event_date)
+        db.session.add(event)
+        db.session.commit()
 
-    flash('hey there')
-    return render_template('index.html')
+    return redirect(url_for('new_get'))
 
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id):

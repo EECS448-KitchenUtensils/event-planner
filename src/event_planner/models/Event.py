@@ -1,3 +1,5 @@
+import string
+import random
 from .. import db
 from . Participant import Participant
 class Event(db.Model):
@@ -20,4 +22,4 @@ class Event(db.Model):
         self.title = title
         self.description = description
         self.date = date
-        self.admin_link = "foo"
+        self.admin_link = "".join([random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(16)])

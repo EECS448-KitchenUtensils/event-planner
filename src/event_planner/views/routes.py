@@ -65,7 +65,6 @@ def new_post():
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id=None):
     """ GET - user view """
-
     # events.where(event.id == event_id)
     event = {}
     event['name'] = 'Foobar rally'
@@ -90,4 +89,3 @@ def show_event_get_admin(event_id=None, event_auth_token=None):
 @app.route("/event/<event_id>/<event_auth_token>")
 def show_event_get_admin(event_id=None, event_auth_token=None):
     """ POST - admin changes """
-    

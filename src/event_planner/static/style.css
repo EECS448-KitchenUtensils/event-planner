@@ -73,3 +73,10 @@
     margin: 0 auto;
     padding: 2% 0;
 }
+
+.alert{
+    position: fixed;
+    top: 20px;
+    width: 70%;
+    margin:auto;
+}

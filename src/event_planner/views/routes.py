@@ -32,17 +32,17 @@ def new_get():
 
 @app.route("/new", methods=['POST'])
 def new_post():
-    error = false
+    error = False
     name = request.form['eventname']
     if name == "" or name.isspace():
-        error = true
+        error = True
         flash("The event name is empty.")
 
     desc = request.form['eventdescription']
 
     admin = request.form['adminname']
     if admin == "" or name.isspace():
-        error = true
+        error = True
         flash("The admin's name is required")
 
 

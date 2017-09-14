@@ -4,8 +4,9 @@
 <div class="container">
     <div class="introtext">
     <h1>{{ event['title'] }}</h1>
-    <!--{#<h2>{{ event['participants'][0][0] }}</h2>#}-->
+    <h2>{{ event['description'] }}</h2>
     <h4>{{ event['date'] }}</h4>
+    <h5>Hosted by: {{ event['admin_name'] }}</h5>
     </div>
 
 <!-- Create particpant table for viewing -->

@@ -66,18 +66,17 @@ def new_post():
 def show_event_get(event_id):
     """ GET - user view """
     
-    events = models.Event.query.filter(id == event_id).first()
-    print events
+    event = models.Event.query.filter(models.Event.id == event_id).first()
 
 
     # events.where(event.id == event_id)
-    event = {}
-    event['name'] = 'Foobar rally'
-    event['desc'] = 'fight for your right to bar with your foo'
-    event['time'] = '6/9/6969'
-    event['participants'] = [('Jenny Swepack', '1-4'), ('Gerald Moneybaby', '6-5')]
+    #event = {}
+    #event['name'] = 'Foobar rally'
+    #event['desc'] = 'fight for your right to bar with your foo'
+    #event['time'] = '6/9/6969'
+    #event['participants'] = [('Jenny Swepack', '1-4'), ('Gerald Moneybaby', '6-5')]
 
-    return render_template('event_view.html', event=events)
+    return render_template('event_view.html', event=event)
 
 
 @app.route("/event/<event_id>", methods=['POST'])

@@ -18,14 +18,15 @@
 
 <!-- Form for adding participant -->
 
-    <form class="col-sm-3 mx-auto" method="POST">
-        <input type="text" name="participantname" placeholder="Participant Name" class="form-control" />
-        <br/>
-
-        <div class="container text-center">
-            <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
-            <p>Time slots are 30 minutes long and begin at indicated time.</p>
-            <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
+    <form class="col-sm-10 mx-auto" method="POST">
+        <div class="container">
+            <div class="text-center">
+                <input type="text" name="participantname" placeholder="Participant Name" class="form-control" />
+                <br/>
+                <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
+                <p>Time slots are 30 minutes long and begin at indicated time.</p>
+                <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
+            </div>
 
             <div class="timeslot-picker">
                 {% for i, date in daterange %}

@@ -72,20 +72,23 @@ def show_event_get(event_id=None):
     event['time'] = '6/9/6969'
     event['participants'] = [('Jenny Swepack', '1-4'), ('Gerald Moneybaby', '6-5')]
 
-    if event_auth_token == None:
-        return render_template('event_view.html', event=event)
-    else:
-        return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+    return render_template('event_view.html', event=event)
 
 
 @app.route("/event/<event_id>", methods=['POST'])
 def show_event_post(event_id=None):
     """ POST - user adds participation """
 
+    return render_template('event_view.html', event=event)
+
 @app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
 def show_event_get_admin(event_id=None, event_auth_token=None):
     """ GET - admin view """
 
+    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+
 @app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
 def show_event_post_admin(event_id=None, event_auth_token=None):
     """ POST - admin changes """
+
+    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)

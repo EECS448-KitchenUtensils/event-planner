@@ -4,20 +4,8 @@ from datetime import date as dt
 
 @app.route("/")
 def index():
-    event = {}
-    event['name'] = "Software Party!"
-    event['date'] = '9/18/2017'
-    event['description'] = "Software party for the EECS 448 students."
-    event['admin'] = "Kitchen Utensils Team"
 
-    #TESTING
-    event1 = {}
-    event1['name'] = "Dinner Date"
-    event1['date'] = '9/19/2017'
-    event1['description'] = "Dinner date with the finest utensils"
-    event1['admin'] = "Gerald Moneybaby"
-
-    events = (event, event1)
+    events = models.Event.query.all()
 
     return render_template('index.html', events=events)
 
@@ -68,7 +56,7 @@ def new_post():
 
     #commit to db if no error.
     if not error:
-        event = models.Event(name, desc, event_date)
+        event = models.Event(name, desc, event_date, admin)
         db.session.add(event)
         db.session.commit()
 

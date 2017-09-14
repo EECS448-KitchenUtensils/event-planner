@@ -24,43 +24,18 @@
 
         <div class="container text-center">
             <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
+            <p>Time slots are 30 minutes long and begin at indicated time.</p>
+            <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
 
-            <div class="conatiner 12-hour-form">
-                <form class="col-sm-10 mx-auto" method="POST">
-                    <p>Time slots are 30 minutes long and begin at indicated time.</p>
-                    <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
-
-                    <div class="timeslot-picker">
-                        {% for i, date in daterange %}
-                            <div class="timeslot">
-                                {{ date }}
-                                <input type="hidden" name="slot_{{ i }}" value='0'>
-                            </div>
-                        {% endfor %}
+            <div class="timeslot-picker">
+                {% for i, date in daterange %}
+                    <div class="timeslot">
+                        <p class="12-hour-form">{{ date }}</p>
+                        <p class="24-hour-form">{{ daterange24[i] }}</p>
+                        <input type="hidden" name="slot_{{ i }}" value='0'>
                     </div>
-
-                    <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
-                </form>
+                {% endfor %}
             </div>
-
-            <div class="conatiner 24-hour-form">
-                <form class="col-sm-10 mx-auto" method="POST">
-                    <p>Time slots are 30 minutes long and begin at indicated time.</p>
-                    <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
-
-                    <div class="timeslot-picker">
-                        {% for i, date in daterange24 %}
-                            <div class="timeslot">
-                                {{ date }}
-                                <input type="hidden" name="slot_{{ i }}" value='0'>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
-                </form>
-            </div>
-
         </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>

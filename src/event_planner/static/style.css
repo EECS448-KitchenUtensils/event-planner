@@ -53,8 +53,8 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     width: 65%;
-    margin: 0 auto;
-    padding: 2% 0;
+    margin: 10px auto;
+    padding: 10px 0;
     background-color: #7FDBFF;
 }
 .eventcard:hover {

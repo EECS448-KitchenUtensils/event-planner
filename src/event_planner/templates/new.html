@@ -3,7 +3,7 @@
 <h1>Create a New Event</h1>
 <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
 
-    <div class="conatiner 12-hour-form">
+    <div class="conatiner">
         <form class="col-sm-10 mx-auto" method="POST">
             <input type="text" name="eventname" placeholder="Event Name" class="form-control" />
             <br />
@@ -19,32 +19,8 @@
             <div class="timeslot-picker">
                 {% for i, date in daterange %}
                     <div class="timeslot">
-                        {{ date }}
-                        <input type="hidden" name="slot_{{ i }}" value='0'>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
-        </form>
-    </div>
-
-    <div class="conatiner 24-hour-form">
-        <form class="col-sm-10 mx-auto" method="POST">
-            <input type="text" name="eventname" placeholder="Event Name" class="form-control" />
-            <br />
-            <input type="text" name="eventdescription" placeholder="Event Description" class="form-control" />
-            <br />
-            <input type="text" name="adminname" placeholder="Your Name" class="form-control" />
-            <br />
-            <input type="date" name="date" placeholder="Date of Event" class="form-control date-picker" />
-            <br />
-            <p>Time slots are 30 minutes long and begin at indicated time.</p>
-
-            <div class="timeslot-picker">
-                {% for i, date in daterange24 %}
-                    <div class="timeslot">
-                        {{ date }}
+                        <p class="12-hour-form">{{ date }}</p>
+                        <p class="24-hour-form">{{ daterange24[i] }}</p>
                         <input type="hidden" name="slot_{{ i }}" value='0'>
                     </div>
                 {% endfor %}

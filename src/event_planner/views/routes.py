@@ -21,28 +21,8 @@ def index():
 
     return render_template('index.html', events=events)
 
-@app.route("/new", methods=['POST', 'GET'])
-def new():
-    if request.method == "POST":
-        name = request.form['eventname']
-        desc = request.form['eventdescription']
-        admin = request.form['adminname']
-
-        month, day, year = request.form['date'].split('/')
-        event_date = dt(int(year), int(month), int(day))
-
-        event = models.Event(title = name, description = desc, date = event_date)
-        # needs to add participants and timeslots
-
-        slotdata = []
-        for x in range(0,47):
-            slotdata.append(request.form['slot_%s' % x])
-
-        #db.session.add(event)
-        #db.session.commit()
-
-        flash('hey there')
-        return render_template('index.html')
+@app.route("/new", methods=['GET'])
+def new_get():
 
     #Create the dates to show in the template for iterator.
     daterange = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM','3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
@@ -50,9 +30,41 @@ def new():
     daterange = enumerate(daterange)
     return render_template('new.html', daterange=daterange, daterange24=daterange24)
 
-@app.route("/event/<event_id>")
-@app.route("/event/<event_id>/<event_auth_token>")
-def show_event(event_id=None, event_auth_token=None):
+@app.route("/new", methods=['POST'])
+def new_post():
+    error = false
+    name = request.form['eventname']
+    if name == "" or name.isspace():
+        error = true
+        flash("The event name is empty.")
+
+    desc = request.form['eventdescription']
+
+    admin = request.form['adminname']
+    if admin == "" or name.isspace():
+        error = true
+        flash("The admin's name is required")
+
+
+    month, day, year = request.form['date'].split('/')
+    event_date = dt(int(year), int(month), int(day))
+
+    event = models.Event(title = name, description = desc, date = event_date)
+    # needs to add participants and timeslots
+
+    slotdata = []
+    for x in range(0,47):
+        slotdata.append(request.form['slot_%s' % x])
+
+    #db.session.add(event)
+    #db.session.commit()
+
+    flash('hey there')
+    return render_template('index.html')
+
+@app.route("/event/<event_id>", methods=['GET'])
+def show_event_get(event_id=None):
+    """ GET - user view """
 
     # events.where(event.id == event_id)
     event = {}
@@ -65,3 +77,17 @@ def show_event(event_id=None, event_auth_token=None):
         return render_template('event_view.html', event=event)
     else:
         return render_template('event_manage.html', event=event, event_auth_token=event_auth_token)
+
+
+@app.route("/event/<event_id>", methods=['POST'])
+def show_event_get(event_id=None):
+    """ POST - user adds participation """
+
+@app.route("/event/<event_id>/<event_auth_token>")
+def show_event_get_admin(event_id=None, event_auth_token=None):
+    """ GET - admin view """
+
+@app.route("/event/<event_id>/<event_auth_token>")
+def show_event_get_admin(event_id=None, event_auth_token=None):
+    """ POST - admin changes """
+    

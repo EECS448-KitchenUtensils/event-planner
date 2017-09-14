@@ -7,3 +7,7 @@ class Timeslot(db.Model):
     """The id of the Participant model that this Timeslot belongs to"""
     time = db.Column(db.Time)
     """The time that this timeslot started at"""
+    participant = db.relationship("Participant")
+    def __init__(self, time, participant):
+        self.time = time
+        self.participant = participant

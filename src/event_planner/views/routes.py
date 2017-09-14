@@ -83,11 +83,11 @@ def show_event_get(event_id=None):
 def show_event_post(event_id=None):
     """ POST - user adds participation """
 
-@app.route("/event/<event_id>/<event_auth_token>")
+@app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
 def show_event_get_admin(event_id=None, event_auth_token=None):
     """ GET - admin view """
 
-@app.route("/event/<event_id>/<event_auth_token>")
+@app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
 def show_event_post_admin(event_id=None, event_auth_token=None):
     """ POST - admin changes """
     

@@ -13,18 +13,32 @@
 <!-- Create particpant table for viewing -->
 
    <div class="container">
-        {% for participant in participants %}
+       <div class="row">
+           <div class="col-sm-3">
+
+           </div>
+           <div class="col-sm-9">
+               <div class="row">
+               {% for t in event_timeslots %}
+                   <div class="col">
+                       {{ t.time }}
+                   </div>
+               {% endfor %}
+               </div>
+           </div>
+       </div>
+       {% for participant in participants %}
             <div class="row">
                 <div class="col-sm-3">
-                    {{ participant[0] }}
-                </div> <!-- prints the name from the test data -->
+                    {{ participant }}
+                </div>
 
                 <div class="col-sm-9">
                     <div class="row">
-                    {% for time in participant[1] %}
+                    {% for time in part_times %}
                         <div class="col">
                             {{ time }}
-                        </div> <!-- prints the time from the test data -->
+                        </div>
                     {% endfor %}
                     </div>
                 </div>

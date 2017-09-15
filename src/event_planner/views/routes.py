@@ -80,11 +80,11 @@ def show_event_get(event_id):
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
 
-    participants_times = ['10:00 am', '11:00am']
+    
 
-    participants = list(map(lambda x: x.name, event.participants))
+    participants = list(event.participants)
 
-    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, part_times=participants_times)
+    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots)
 
 
 @app.route("/event/<event_id>", methods=['POST'])
@@ -109,7 +109,7 @@ def show_event_post(event_id=None):
     name = request.form["participantname"]
     if name == "" or name.isspace():
         error = True
-        flash("The event name is empty.")
+        flash("The participant's name is empty.")
         
     if not error:
 
@@ -117,13 +117,13 @@ def show_event_post(event_id=None):
         #Add the participant
         new_participant = models.Participant(name, event, False)
         db.session.add(new_participant)
-        #Add timeslots
+        #input_list_to_time_list is a function from utils.py
         times_list = utils.input_list_to_time_list(slotdata)
         for t in times_list:
             db.session.add(models.Timeslot(t, new_participant))
 
-        #Commit Changes
-        db.session.commit
+
+        db.session.commit()
 
     return redirect(url_for('show_event_get', event_id=event_id))
 

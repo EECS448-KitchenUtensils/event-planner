@@ -21,7 +21,7 @@
                <div class="row">
                {% for t in event_timeslots %}
                    <div class="col">
-                       {{ t.time }}
+                       {{ t.time.strftime("%I:%M %p") }}
                    </div>
                {% endfor %}
                </div>
@@ -30,14 +30,14 @@
        {% for participant in participants %}
             <div class="row">
                 <div class="col-sm-3">
-                    {{ participant }}
+                    {{ participant.name }}
                 </div>
 
                 <div class="col-sm-9">
                     <div class="row">
-                    {% for time in part_times %}
+                    {% for t in participant.timeslots %}
                         <div class="col">
-                            {{ time }}
+                            {{ t.time.strftime("%I:%M %p") }}
                         </div>
                     {% endfor %}
                     </div>

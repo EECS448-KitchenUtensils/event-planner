@@ -67,7 +67,7 @@ def new_post():
         db.session.add(admin_model)
 
         #input_list_to_time_list is a function from utils.py
-        times_list = input_list_to_time_list(slotdata)
+        times_list = utils.input_list_to_time_list(slotdata)
         for t in times_list:
             db.session.add(models.Timeslot(t, admin_model))
 

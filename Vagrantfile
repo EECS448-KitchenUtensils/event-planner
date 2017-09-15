@@ -68,7 +68,9 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt update
-    apt install -y python3-pip sqlite3
+    apt install -y python3-pip sqlite3 postgresql libpq-dev
     pip3 install -r /vagrant/requirements.txt
+    sudo -u postgres psql -c "CREATE USER evplanner WITH PASSWORD 'evplanner';"
+    su postgres -c "createdb -O evplanner evplanner"
   SHELL
 end

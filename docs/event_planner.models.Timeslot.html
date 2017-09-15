@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: class Timeslot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><strong>event_planner.models.Timeslot</strong> = <a name="event_planner.models.Timeslot">class Timeslot</a>(flask_sqlalchemy.Model)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Database&nbsp;model&nbsp;for&nbsp;a&nbsp;Participant's&nbsp;timeslots<br>
+Fields:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;id:&nbsp;INTEGER&nbsp;PRIMARY&nbsp;KEY<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;part_id:&nbsp;INTEGER&nbsp;FOREIGN&nbsp;KEY<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;time:&nbsp;TIME<br>
+Relationships:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;participant:&nbsp;The&nbsp;parent&nbsp;Participant&nbsp;for&nbsp;this&nbsp;Timeslot<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="event_planner.models.Timeslot.html#Timeslot">Timeslot</a></dd>
+<dd>flask_sqlalchemy.Model</dd>
+<dd><a href="flask_sqlalchemy.html#Model">flask_sqlalchemy.Model</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Timeslot-__init__"><strong>__init__</strong></a>(self, time, participant)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>id</strong></dt>
+</dl>
+<dl><dt><strong>part_id</strong></dt>
+</dl>
+<dl><dt><strong>participant</strong></dt>
+</dl>
+<dl><dt><strong>time</strong></dt>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__mapper__</strong> = &lt;Mapper at 0x7efe14689470; Timeslot&gt;</dl>
+
+<dl><dt><strong>__table__</strong> = Table('timeslot', MetaData(bind=None), Column('i...n('time', Time(), table=&lt;timeslot&gt;), schema=None)</dl>
+
+<hr>
+Data and other attributes inherited from flask_sqlalchemy.Model:<br>
+<dl><dt><strong>metadata</strong> = MetaData(bind=None)</dl>
+
+<dl><dt><strong>query</strong> = &lt;flask_sqlalchemy.BaseQuery object&gt;</dl>
+
+<dl><dt><strong>query_class</strong> = &lt;class 'flask_sqlalchemy.BaseQuery'&gt;<dd><tt>SQLAlchemy&nbsp;:class:`~sqlalchemy.orm.query.Query`&nbsp;subclass&nbsp;with&nbsp;convenience&nbsp;methods&nbsp;for&nbsp;querying&nbsp;in&nbsp;a&nbsp;web&nbsp;application.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;the&nbsp;default&nbsp;:attr:`~Model.query`&nbsp;object&nbsp;used&nbsp;for&nbsp;models,&nbsp;and&nbsp;exposed&nbsp;as&nbsp;:attr:`~SQLAlchemy.Query`.<br>
+Override&nbsp;the&nbsp;query&nbsp;class&nbsp;for&nbsp;an&nbsp;individual&nbsp;model&nbsp;by&nbsp;subclassing&nbsp;this&nbsp;and&nbsp;setting&nbsp;:attr:`~Model.query_class`.</tt></dl>
+
+<hr>
+Data descriptors inherited from <a href="flask_sqlalchemy.html#Model">flask_sqlalchemy.Model</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__tablename__</strong></dt>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table>
+</body></html>

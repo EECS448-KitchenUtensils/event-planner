@@ -13,8 +13,16 @@ db = SQLAlchemy(app)
 #The imports come later so that the app and db objects are in existence
 from . import models
 from . import views
-#TODO: move migrations out
-db.create_all()
+
+@app.cli.command("migrate")
+def migrate_db():
+    """Creates the database schema"""
+    db.create_all()
+@app.cli.command("purge-db")
+def purge_db():
+    """Purges the database"""
+    db.drop_all()
+    db.create_all()
 #Static files here
 # url_for('static', filename='style.css')
 # url_for('static', filename='script.js')

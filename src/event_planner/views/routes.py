@@ -80,8 +80,6 @@ def show_event_get(event_id):
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
 
-    
-
     participants = list(event.participants)
 
     return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots)

@@ -1,6 +1,14 @@
 from .. import db
 class Timeslot(db.Model):
-    """Model to allow a participant to have multiple timeslots"""
+    """
+    Database model for a Participant's timeslots
+    Fields:
+        * id: INTEGER PRIMARY KEY
+        * part_id: INTEGER FOREIGN KEY
+        * time: TIME
+    Relationships:
+        * participant: The parent Participant for this Timeslot
+    """
     id = db.Column(db.Integer, primary_key=True)
     """Primary key"""
     part_id = db.Column(db.Integer, db.ForeignKey("participant.id"))

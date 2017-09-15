@@ -1,1 +1,4 @@
-SQLAlchemy models go here.
+Model hierarchy
+===============
+
+Event -*> Participant -*> Timeslot

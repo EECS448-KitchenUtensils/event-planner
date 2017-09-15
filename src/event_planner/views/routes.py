@@ -84,7 +84,7 @@ def show_event_get(event_id):
 
     participants = list(map(lambda x: x.name, event.participants))
 
-    return render_template('event_view.html', event=event, admin=event_admin participants=participants, event_timeslots=event_timeslots, part_times=participants_times)
+    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, part_times=participants_times)
 
 
 @app.route("/event/<event_id>", methods=['POST'])

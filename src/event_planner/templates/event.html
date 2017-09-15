@@ -12,11 +12,25 @@
 
 <!-- Create particpant table for viewing -->
 
-   <!--{# <div class="participanttable">
-        {% for p in event['participants'] %} 
-        <p>{{ p[0] }}</p>
+   <div class="container">
+        {% for participant in participants %}
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ participant[0] }}
+                </div> <!-- prints the name from the test data -->
+
+                <div class="col-sm-9">
+                    <div class="row">
+                    {% for time in participant[1] %}
+                        <div class="col">
+                            {{ time }}
+                        </div> <!-- prints the time from the test data -->
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </div>#}-->
+    </div>
 
     <button class="btn btn-outline-info col-sm-4 join my-4" onclick="showparticipantform()">Join Event</button>
 

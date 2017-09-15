@@ -1,6 +1,7 @@
 from .. import db, models, app, render_template, url_for, request
 from flask import flash, redirect
 from datetime import date as dt
+from .. import utils
 
 @app.route("/")
 def index():
@@ -20,7 +21,7 @@ def new_get():
 
 @app.route("/new", methods=['POST'])
 def new_post():
-    #Variable for recording error in form parsing to prevent back commit to db
+    """Creates a new event and commits it to the db"""
     error = False
 
     #Check basic for elements (Besides time slot)
@@ -54,17 +55,30 @@ def new_post():
         error = True
         flash('Internal parsing error (Timeslot form elements corrupt)')
 
-    #commit to db if no error.
+    #Commit to db if no error.
     if not error:
+
+        #Create each model, references go in constructors
+
         event = models.Event(name, desc, event_date, admin)
         db.session.add(event)
+
+        admin_model = models.Participant(admin, event, True)
+        db.session.add(admin_model)
+
+        #input_list_to_time_list is a function from utils.py
+        times_list = input_list_to_time_list(slotdata)
+        for t in times_list:
+            db.session.add(models.Timeslot(t, admin_model))
+
+        
         db.session.commit()
 
     return redirect(url_for('new_get'))
 
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id):
-    """ GET - user view """
+    """ GET - user view of event"""
 
     #Get event by ID from DB and send to event view
     event = models.Event.query.filter(models.Event.id == event_id).first()
@@ -106,7 +120,7 @@ def show_event_post(event_id=None):
 
 @app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
 def show_event_get_admin(event_id=None, event_auth_token=None):
-    """ GET - admin view """
+    """ GET - admin view of event"""
     # events.where(event.id == event_id)
     event = {}
     event['name'] = 'Foobar rally'

@@ -13,6 +13,9 @@ class Participant(db.Model):
     """Name of this event"""
     timeslots = db.relationship("Timeslot")
     """Timeslots that this participant is available"""
-    def __init__(self, name, event):
+    is_admin = db.Column(db.Boolean)
+    """Stores if participant is admin of their event"""
+    def __init__(self, name, event, is_admin):
         self.name = name
         self.event = event
+        self.is_admin = is_admin

@@ -8,6 +8,8 @@ class Timeslot(db.Model):
     time = db.Column(db.Time)
     """The time that this timeslot started at"""
     participant = db.relationship("Participant")
+    """Relationship to the participant model"""
     def __init__(self, time, participant):
         self.time = time
         self.participant = participant
+        

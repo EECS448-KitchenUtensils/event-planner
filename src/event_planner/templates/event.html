@@ -59,16 +59,7 @@
                 <p>Time slots are 30 minutes long and begin at indicated time.</p>
                 <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
             </div>
-
-            <div class="timeslot-picker">
-                {% for i, date in daterange %}
-                    <div class="timeslot">
-                        <p class="12-hour-form">{{ date }}</p>
-                        <p class="24-hour-form">{{ daterange24[i] }}</p>
-                        <input type="hidden" name="slot_{{ i }}" value='0'>
-                    </div>
-                {% endfor %}
-            </div>
+            {%include 'timeslot_picker.html'%}
         </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>

@@ -1,6 +1,6 @@
 export FLASK_APP=event_planner
 export FLASK_DEBUG=True
-export PYTHONPATH=`pwd`/src
+export PYTHONPATH=$(CURDIR)/src
 
 .PHONY: run docs migrate purge
 

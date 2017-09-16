@@ -4,6 +4,7 @@ from . import defaults
 #Define the global flask app
 app = Flask(__name__)
 app.config.from_object(defaults)
+app.config.from_envvar("EV_CONFIG")
 #Insert stuff into the templating engine's world
 from . import utils
 app.jinja_env.globals.update(all_timeslots=utils.all_timeslots(),

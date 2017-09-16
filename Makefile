@@ -1,8 +1,8 @@
 export FLASK_APP=event_planner
 export FLASK_DEBUG=True
-export PYTHONPATH=$(CURDIR)/src
+export PYTHONPATH=$(CURDIR)/src:$(CURDIR):/tests
 
-.PHONY: run docs migrate purge
+.PHONY: run docs migrate purge test
 
 run:
 	flask run -h 0.0.0.0
@@ -13,3 +13,7 @@ migrate:
 	flask migrate
 purge:
 	flask purge
+test:
+	echo $(PYTHONPATH)
+	python3 -m unittest tests.unit
+	python3 -m unittest tests.integration

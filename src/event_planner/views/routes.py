@@ -5,13 +5,14 @@ from .. import utils
 
 @app.route("/")
 def index():
-
+    """GET - Default view of all events"""
     events = models.Event.query.all()
 
     return render_template('index.html', events=events)
 
 @app.route("/new", methods=['GET'])
 def new_get():
+    """GET - New event form"""
     return render_template('new.html', timeslots=[time(i//2, (i%2)*30) for i in range(48)])
 
 @app.route("/new", methods=['POST'])
@@ -155,4 +156,5 @@ def show_event_post_admin(event_id=None, event_auth_token=None):
     return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
 
 def get_event(id):
+    """Utility function to get the first event matching id or None"""
     return models.Event.query.filter(models.Event.id == id).first()

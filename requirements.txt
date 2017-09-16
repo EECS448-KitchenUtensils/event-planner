@@ -1,3 +1,4 @@
 flask==0.12.2
 Flask-SQLAlchemy==2.2
 psycopg2
+pdoc

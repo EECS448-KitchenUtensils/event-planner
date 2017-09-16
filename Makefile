@@ -7,8 +7,7 @@ export PYTHONPATH=$(CURDIR)/src:$(CURDIR):/tests
 run:
 	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask run -h 0.0.0.0
 docs:
-	cd src && python3 -m pydoc -w ./
-	cd src && mv -v *.html ../docs
+	cd docs && pdoc --html event_planner --overwrite
 migrate:
 	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask migrate
 purge:

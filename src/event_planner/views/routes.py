@@ -70,7 +70,7 @@ def new_post():
 
         db.session.commit()
 
-    return redirect(url_for('new_get'))
+    return redirect(url_for('index'))
 
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id):

@@ -1,5 +1,5 @@
-from .. import db, models, app, render_template, url_for, request
-from flask import flash, redirect
+from .. import db, models, app
+from flask import flash, redirect, abort, render_template, url_for, request
 from datetime import date as dt, time
 from .. import utils
 
@@ -77,7 +77,7 @@ def show_event_get(event_id):
     """ GET - user view of event"""
 
     #Get event by ID from DB and send to event view
-    event = get_event(event_id)
+    event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
 

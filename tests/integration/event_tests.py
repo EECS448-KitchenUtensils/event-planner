@@ -67,6 +67,7 @@ class CreatingAnEventWith(EventTestCase):
 
     def test_missing_members(self):
         """Should return 400"""
+        self.form_members.remove("eventdescription")
         for element in self.form_members:
             with self.subTest(i=element):
                 res = self.missing(element)

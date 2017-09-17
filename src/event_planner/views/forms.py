@@ -35,10 +35,10 @@ class EventForm(Form):
     """
     `Form` used for creating new `Event`s
     """
-    eventname = StringField("eventname", [])
-    eventdescription = StringField("eventdescription", [])
-    adminname = StringField("adminname", [])
-    date = DateField("date", format="%m/%d/%Y")
+    eventname = StringField("eventname", [DataRequired()])
+    eventdescription = StringField("eventdescription", [Optional()])
+    adminname = StringField("adminname", [DataRequired()])
+    date = DateField("date", [DataRequired()], format="%m/%d/%Y")
     @staticmethod
     def with_timeslots(timeslots=utils.all_timeslots()):
         """Returns `EventForm` as if it were declared with the given timeslots"""
@@ -49,6 +49,6 @@ class EventForm(Form):
         e = type("EventFormWith"+ugly_type_suffix, EventForm.__bases__, dict(EventForm.__dict__))
         for timeslot in timeslots:
             field_name = "slot_" + timeslot.strftime("%H%M")
-            setattr(e, field_name, TimeslotField(field_name, [], timeslot=timeslot))
+            setattr(e, field_name, TimeslotField(field_name, [Optional()], timeslot=timeslot))
         e.timeslots = timeslots
         return e

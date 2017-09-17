@@ -6,7 +6,7 @@ from datetime import date
 
 def make_slots():
     """Helper func to make the timeslot part of the form data"""
-    return {"slot_%s" % i: "0" for i in range(48)}
+    return {"slot_%s" % i: "1" for i in range(48)}
 
 class IntegrationTestCase(unittest.TestCase):
     """Base class for all integration tests"""
@@ -84,6 +84,13 @@ class CreatingAnEventWith(EventTestCase):
         data = tmp_data
         res = self.app.post("/new", data=data)
         self.assertEqual(res.status_code, 400)
+    def test_empty_timeslots(self):
+        data = self.valid_data()
+        for key, value in data.items():
+            if key.startswith("slot"):
+                data[key] = "0"
+        res = self.app.post("/event/1", data=data)
+        self.assertEqual(res.status_code, 400)
     def test_empty_members(self):
         """Should return 400"""
         self.form_members.remove("eventdescription") #eventdescription is allowed to be empty
@@ -108,6 +115,7 @@ class ParticipantTestCase(IntegrationTestCase):
         super().setUp()
         self.slots = make_slots()
         self.text_members = ["participantname"]
+        self.form_members = self.text_members
         with event_planner.app.app_context():
             self.event = event_planner.models.Event("test", "test", date(2015, 10, 10))
             self.db.session.add(self.event)
@@ -136,8 +144,47 @@ class WhenAParticipantIsAddedSuccessfully(ParticipantTestCase):
         """Should redirect back to the current event"""
         self.assertEqual(urlparse(self.res.location).path, "/event/1")
 
-class CreatingAParticipantWith(CreatingAnEventWith, ParticipantTestCase):
-    pass
+class CreatingAParticipantWith(ParticipantTestCase):
+    def test_missing_members(self):
+        """Should return 400"""
+        for element in self.form_members:
+            with self.subTest(i=element):
+                res = self.missing(element)
+                self.assertEqual(res.status_code, 400)
+    def test_missing_timeslots(self):
+        """Should return 400"""
+        data = self.valid_data()
+        #remove all timeslots
+        tmp_data = {}
+        for key, value in data.items():
+            if not key.startswith("slot"):
+                tmp_data[key] = value
+        data = tmp_data
+        res = self.app.post("/event/1", data=data)
+        self.assertEqual(res.status_code, 400)
+    def test_empty_timeslots(self):
+        data = self.valid_data()
+        for key, value in data.items():
+            if key.startswith("slot"):
+                data[key] = "0"
+        res = self.app.post("/event/1", data=data)
+        self.assertEqual(res.status_code, 400)
+    def test_empty_members(self):
+        """Should return 400""" 
+        for element in self.form_members:
+            with self.subTest(i=element):
+                res = self.empty(element)
+                self.assertEqual(res.status_code, 400)
+    def missing(self, element):
+        """Executes a form submission, minus the given form member"""
+        data = self.valid_data()
+        del data[element]
+        return self.app.post("/event/1", data=data)
+    def empty(self, element):
+        """Executes a form submissing with the given field as empty string"""
+        data = self.valid_data()
+        data[element] = ""
+        return self.app.post("/event/1", data=data)
 
 
     

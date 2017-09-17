@@ -38,10 +38,10 @@ class EventForm(Form):
     """
     `Form` used for creating new `Event`s
     """
-    eventname = StringField("eventname", [DataRequired()])
+    eventname = StringField("eventname", [DataRequired(message='Event Name cannot be empty')])
     eventdescription = StringField("eventdescription", [Optional()])
-    adminname = StringField("adminname", [DataRequired()])
-    date = DateField("date", [DataRequired()], format="%m/%d/%Y")
+    adminname = StringField("adminname", [DataRequired(message='Admin Name cannot be empty')])
+    date = DateField("date", [DataRequired('Date is empty or invalid')], format="%m/%d/%Y")
     @staticmethod
     def with_timeslots(timeslots=utils.all_timeslots()):
         """Returns `EventForm` as if it were declared with the given timeslots"""
@@ -55,3 +55,25 @@ class EventForm(Form):
             setattr(e, field_name, TimeslotField(field_name, [Optional()], timeslot=timeslot))
         e.timeslots = timeslots
         return e
+<<<<<<< HEAD
+=======
+
+class ParticipantForm(Form):
+    """
+    `Form` used for creating new `Participant`s
+    """
+    participantname = StringField("participantname", [DataRequired(message='Participant Name cannot be empty')])
+    @staticmethod
+    def with_timeslots(timeslots=utils.all_timeslots()):
+        """Returns `EventForm` as if it were declared with the given timeslots"""
+        #TODO: Consider using interning since this is probably crazy slow
+        ugly_type_suffix = "_".join([t.strftime("%H%M") for t in timeslots])
+        #When copy.deepcopy() just won't do, simulate inheiritance and learn to love duck typing
+        #This is needed because the copy module can't handle types...
+        e = type("EventFormWith"+ugly_type_suffix, EventForm.__bases__, dict(EventForm.__dict__))
+        for timeslot in timeslots:
+            field_name = "slot_" + timeslot.strftime("%H%M")
+            setattr(e, field_name, TimeslotField(field_name, [Optional()], timeslot=timeslot))
+        e.timeslots = timeslots
+        return e
+>>>>>>> Added test for no times selected and fixed displaying errors.

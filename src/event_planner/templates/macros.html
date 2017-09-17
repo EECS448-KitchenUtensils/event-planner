@@ -9,14 +9,16 @@
         {% endfor %}
     </div>
 {% endmacro %}
-{% macro display_errors(error_list) %}
-    {% if error_list %}
+{% macro display_errors(form) %}
+    {% if form.errors %}
     <div class="alert alert-danger alert-dismissible fade show">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
         </button>
-        {% for message in error_list %}
-            <p>{{ message }}</p>
+        {% for field in form.errors %}
+        {% for error in form.errors[field] %}
+            <p>{{ error }}</p>
+        {% endfor %}
         {% endfor %}
     </div>
     {% endif %}

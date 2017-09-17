@@ -2,9 +2,9 @@
 {% from 'macros.html' import display_errors, timeslot_picker %}
 {% macro input_field(name, placeholder, class='form-control') %}
     {{ form[name](class_=class, placeholder=placeholder) }}
-    {{ display_errors(form[name].errors) }}
     <br />
 {% endmacro %}
+{{ display_errors(form) }}
 <div class="container text-center">
 <h1>Create a New Event</h1>
 <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>

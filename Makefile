@@ -11,7 +11,7 @@ docs:
 migrate:
 	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask migrate
 purge:
-	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask purge
+	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask purge-db
 test:
 	echo $(PYTHONPATH)
 	python3 -m unittest tests.unit

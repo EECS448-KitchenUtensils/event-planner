@@ -60,7 +60,9 @@ def show_event_get(event_id):
 
     participants = list(event.participants)
 
-    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
+    form_type = forms.ParticipantForm.with_timeslots(event_timeslots_times)
+    form = form_type()
+    return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
 
 
 @app.route("/event/<event_id>", methods=['POST'])
@@ -69,40 +71,27 @@ def show_event_post(event_id=None):
 
     #Get event info
     event = get_event(event_id)
-
-    error = False
-
-    slotdata = []
-    slotdata_error_flag = False
-    for x in range(0,47):
-        if request.form['slot_%s' % x] != 0 or request.form['slot_%s' % x] != 1:
-            slotdata_error_flag == True
-        slotdata.append(request.form['slot_%s' % x])
-    if slotdata_error_flag:
-        error = True
-        flash('Internal parsing error (Timeslot form elements corrupt)')
-
-    name = request.form["participantname"]
-    if name == "" or name.isspace():
-        error = True
-        flash("The participant's name is empty.")
-        
-    if not error:
-
-        #Get Database models ready
-        #Add the participant
-        new_participant = models.Participant(name, event, False)
-        db.session.add(new_participant)
-        #input_list_to_time_list is a function from utils.py
-        times_list = utils.input_list_to_time_list(slotdata)
-        for t in times_list:
-            db.session.add(models.Timeslot(t, new_participant))
-
-
+    admin_timeslots = event.admin.timeslots
+    timeslot_times = [timeslot.time for timeslot in admin_timeslots]
+    form_type = forms.ParticipantForm.with_timeslots(timeslot_times)
+    form = form_type(request.form)
+    if form.validate():
+        participant = models.Participant(form.participantname.data, event, False)
+        db.session.add(participant)
+        for slot in form.timeslots:
+             val = form["slot_%s" % slot.strftime("%H%M")].data[0]
+             if val is True:
+                t = models.Timeslot(slot, participant)
+                db.session.add(t)
         db.session.commit()
-
-    return redirect(url_for('show_event_get', event_id=event_id))
-
+        return redirect(url_for('show_event_get', event_id=event_id))
+    return render_template("event_view.html",
+        event=event,
+        admin=event.admin,
+        participants=list(event.participants),
+        event_timeslots=admin_timeslots,
+        event_timeslot_times=list(map(lambda timeslot: timeslot.time, admin_timeslots)),
+        form=form), 400
 @app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
 def show_event_get_admin(event_id=None, event_auth_token=None):
     """ GET - admin view """

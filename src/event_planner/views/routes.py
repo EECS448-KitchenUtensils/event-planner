@@ -52,10 +52,13 @@ def show_event_get(event_id):
     event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
+    event_timeslots_times = []
+    for t in event_timeslots:
+        event_timeslots_times.append(t.time)
 
     participants = list(event.participants)
 
-    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots)
+    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
 
 
 @app.route("/event/<event_id>", methods=['POST'])

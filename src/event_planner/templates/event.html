@@ -51,7 +51,7 @@
                 <p>Time slots are 30 minutes long and begin at indicated time.</p>
                 <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
             </div>
-            {{ timeslot_picker() }}
+            {{ timeslot_picker(timeslots=event_timeslots_times) }}
         </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>

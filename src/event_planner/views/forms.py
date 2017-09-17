@@ -35,19 +35,20 @@ class EventForm(Form):
     """
     `Form` used for creating new `Event`s
     """
-    eventname = StringField("eventname", [DataRequired])
-    eventdescription = StringField("eventdescription", [DataRequired])
-    adminname = StringField("adminname", [DataRequired])
+    eventname = StringField("eventname", [])
+    eventdescription = StringField("eventdescription", [])
+    adminname = StringField("adminname", [])
     date = DateField("date", format="%m/%d/%Y")
     @staticmethod
     def with_timeslots(timeslots=utils.all_timeslots()):
         """Returns `EventForm` as if it were declared with the given timeslots"""
+        #TODO: Consider using interning since this is probably crazy slow
         ugly_type_suffix = "_".join([t.strftime("%H%M") for t in timeslots])
         #When copy.deepcopy() just won't do, simulate inheiritance and learn to love duck typing
         #This is needed because the copy module can't handle types...
         e = type("EventFormWith"+ugly_type_suffix, EventForm.__bases__, dict(EventForm.__dict__))
         for timeslot in timeslots:
             field_name = "slot_" + timeslot.strftime("%H%M")
-            setattr(e, field_name, TimeslotField(field_name, [Optional], timeslot=timeslot))
+            setattr(e, field_name, TimeslotField(field_name, [], timeslot=timeslot))
         e.timeslots = timeslots
         return e

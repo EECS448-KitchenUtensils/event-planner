@@ -1,3 +1,5 @@
+{% from 'macros.html' import timeslot_picker %}
+
 <!-- Pull event information -->
 
 <div class="centertext align-items-center">
@@ -84,7 +86,7 @@
                 <p>Time slots are 30 minutes long and begin at indicated time.</p>
                 <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
             </div>
-            {%include 'timeslot_picker.html'%}
+            {{ timeslot_picker() }}
         </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>

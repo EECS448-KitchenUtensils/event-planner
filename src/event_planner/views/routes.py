@@ -2,6 +2,9 @@ from .. import db, models, app
 from flask import flash, redirect, abort, render_template, url_for, request
 from datetime import date as dt, time
 from .. import utils
+from . import forms
+
+empty_form = forms.EventForm.with_timeslots()
 
 @app.route("/")
 def index():
@@ -13,64 +16,33 @@ def index():
 @app.route("/new", methods=['GET'])
 def new_get():
     """GET - New event form"""
-    return render_template('new.html', timeslots=[time(i//2, (i%2)*30) for i in range(48)])
+    return render_template('new.html', form=empty_form())
 
 @app.route("/new", methods=['POST'])
 def new_post():
     """Creates a new event and commits it to the db"""
-    error = False
 
-    #Check basic for elements (Besides time slot)
-    name = request.form['eventname']
-    if name == "" or name.isspace():
-        error = True
-        flash("The event name is empty.")
-
-    desc = request.form['eventdescription']
-
-    admin = request.form['adminname']
-    if admin == "" or name.isspace():
-        error = True
-        flash("The admin's name is required")
-
-    try:
-        month, day, year = request.form['date'].split('/')
-        event_date = dt(int(year), int(month), int(day))
-    except:
-        error = True
-        flash('Date empty or format error')
-
-    #Parse and check timeslot elements
-    slotdata_error_flag = False
-    slotdata = []
-    for x in range(0,47):
-        if request.form['slot_%s' % x] != 0 or request.form['slot_%s' % x] != 1:
-            slotdata_error_flag == True
-        slotdata.append(request.form['slot_%s' % x])
-    if slotdata_error_flag:
-        error = True
-        flash('Internal parsing error (Timeslot form elements corrupt)')
-
-    #Commit to db if no error.
-    if not error:
-
-        #Create each model, references go in constructors
-
-        event = models.Event(name, desc, event_date, admin)
+    form = empty_form(request.form)
+    if form.validate():
+        event = models.Event(
+            form.eventname.data,
+            form.eventdescription.data,
+            form.date.data
+        )
         db.session.add(event)
-
-        admin_model = models.Participant(admin, event, True)
-        db.session.add(admin_model)
-
-        #input_list_to_time_list is a function from utils.py
-        times_list = utils.input_list_to_time_list(slotdata)
-        for t in times_list:
-            db.session.add(models.Timeslot(t, admin_model))
-
-
+        admin = models.Participant(
+            form.adminname.data,
+            event,
+            True
+        )
+        db.session.add(admin)
+        for timeslot in form.timeslots:
+            t = models.Timeslot(timeslot, admin)
+            db.session.add(t)
         db.session.commit()
-
-    return redirect(url_for('index'))
+        return redirect(url_for("index"))
+    else:
+        return render_template("new.html", form=form), 400
 
 @app.route("/event/<event_id>", methods=['GET'])
 def show_event_get(event_id):

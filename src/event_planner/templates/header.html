@@ -1,3 +1,4 @@
+{% from 'macros.html' import display_errors %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,14 +29,5 @@
         </nav>
 
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                </button>
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
+            {{ display_errors(messages) }}
         {% endwith %}

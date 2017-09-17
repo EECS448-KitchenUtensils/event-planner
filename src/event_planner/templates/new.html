@@ -1,9 +1,10 @@
 {% include 'header.html' %}
-{% macro input_field(name, placeholder, class='form-control') -%}
-    <input type="text" name="{{ name }}" placeholder="{{ placeholder }}" class={{ class }}
-    {% if eventname is defined %} value="{{ name }}" {% endif %} />
+{% from 'macros.html' import display_errors, timeslot_picker %}
+{% macro input_field(name, placeholder, class='form-control') %}
+    {{ form[name](class_=class, placeholder=placeholder) }}
+    {{ display_errors(form[name].errors) }}
     <br />
-{%- endmacro -%}
+{% endmacro %}
 <div class="container text-center">
 <h1>Create a New Event</h1>
 <button class="btn btn-info toggle-time-button my-3 btn-sm">Toggle time format</button>
@@ -16,7 +17,7 @@
             {{ input_field('date', 'Date of Event', 'form-control date-picker') }}
             <p>Time slots are 30 minutes long and begin at indicated time.</p>
             <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
-            {%include 'timeslot_picker.html'%}
+            {{ timeslot_picker() }}
             <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
         </form>
     </div>

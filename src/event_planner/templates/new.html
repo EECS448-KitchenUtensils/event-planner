@@ -17,7 +17,11 @@
             {{ input_field('date', 'Date of Event', 'form-control date-picker') }}
             <p>Time slots are 30 minutes long and begin at indicated time.</p>
             <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
-            {{ timeslot_picker() }}
+            <div class="timeslot-picker">
+                {% for timeslot in form.timeslots %}
+                    {{ form["slot_%s" % timeslot.strftime("%H%M")]()|safe }}
+                {% endfor %}
+            </div>
             <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
         </form>
     </div>

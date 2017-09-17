@@ -13,13 +13,16 @@ class TimeslotInput(HiddenInput):
         super().__init__()
     def __call__(self, field, **kwargs):
         class_ = kwargs.pop("class_", "")
-        val = field.data if field.data is not None else field.default
-        val = "1" if val else "0"
-        html = ["<div class=\"timeslot\">"]
+        val = field.data[0] if hasattr(field.data, "__len__") else field.default
+        print(val)
+        html = ["<div id=\"slot_button_%s\" class=\"timeslot\">" % field._timeslot.strftime("%H%M")]
         html.append("<p class=\"12-hour-form\">%s</p>" % self._timeslot.strftime("%I:%M %p"))
         html.append("<p class=\"24-hour-form\">%s</p>" % self._timeslot.strftime("%H:%M"))
-        html.append("<input type=\"hidden\" class=\"%s\" value=\"%s\" name=\"%s\"/>" % (class_, val, field.name))
+        html.append("<input type=\"hidden\" class=\"%s\" value=\"%s\" name=\"%s\"/>" % (class_, ("1" if val else "0"), field.name))
         html.append("</div>")
+        if val is True:
+            #jQuery UI selectable workaround
+            html.append("<script> $(document).ready(function() {$(\"#slot_button_%s\").removeClass(\"ui-selected\").addClass(\"ui-selected\").addClass(\"active\");});</script>" % self._timeslot.strftime("%H%M"))
         return "\n".join(html)
 class TimeslotField(BooleanField):
     def __init__(self, label="", validators=None, timeslot=datetime.time(), **kwargs):

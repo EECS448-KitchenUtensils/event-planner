@@ -14,28 +14,20 @@
 
     <div class="participanttable">
         <div class="container">
-            <table style="width: 100%">
-                <tr>
-                {% for t in event_timeslots %}
-                    <th>
-                        {{ t.time.strftime("%I:%M %p") }}
-                    </th>
-                {% endfor %}
-                </tr>
-                {% for p in participants%}
-                    <tr>
-                        {% for t in event_timeslots %}
-                            <td>
-                            {% for pt in p.timeslots%}
-                                {% if pt.time == t.time  %}
-                                        {{p.name}}
-                                {% endif %}
+            <div class="timeslot-display">
+                    {% for t in event_timeslots %}
+                        <div class="timeslot" style="height:auto;width:auto;">
+                            <p><strong>{{ t.time.strftime("%I:%M %p") }}</strong></p>
+                            {% for p in participants %}
+                                {% for pt in p.timeslots %}
+                                    {% if pt.time == t.time %}
+                                        <p>{{ p.name }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </table>
+                        </div>  
+                    {% endfor %}
+            </div>
         </div>
     </div>
     <button class="btn btn-outline-info col-sm-4 join my-4" onclick="showparticipantform()">Join Event</button>
@@ -62,13 +54,13 @@
     $(".24-hour-form").hide();
 
     function showparticipantform() {
-    var x = document.getElementById('formshow');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
+        var x = document.getElementById('formshow');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
     }
-}
 
     $('.toggle-time-button').on('click', function(e){
         e.preventDefault()

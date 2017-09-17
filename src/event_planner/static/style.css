@@ -30,6 +30,13 @@
     margin-top: 30px;
 }
 
+.timeslot-display{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
 .timeslot{
     width: 100px;
     height: 50px;
@@ -94,20 +101,4 @@
 
 .participanttable{
     padding: 0 2%;
-}
-
-table{
-    text-align: left;
-    border: 1px solid black;
-}
-
-td{
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-}
-
-th{
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
 }

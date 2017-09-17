@@ -1,9 +1,5 @@
 {% include 'header.html' %}
-{% from 'macros.html' import display_errors, timeslot_picker %}
-{% macro input_field(name, placeholder, class='form-control') %}
-    {{ form[name](class_=class, placeholder=placeholder) }}
-    <br />
-{% endmacro %}
+{% from 'macros.html' import display_errors, input_field %}
 {{ display_errors(form) }}
 <div class="container text-center">
 <h1>Create a New Event</h1>
@@ -11,10 +7,10 @@
 
     <div class="container">
         <form class="col-sm-10 mx-auto" method="POST">
-            {{ input_field('eventname', 'Event Name') }}
-            {{ input_field('eventdescription', 'Event Description') }}
-            {{ input_field('adminname', 'Your Name') }}
-            {{ input_field('date', 'Date of Event', 'form-control date-picker') }}
+            {{ input_field(form, 'eventname', 'Event Name') }}
+            {{ input_field(form, 'eventdescription', 'Event Description') }}
+            {{ input_field(form, 'adminname', 'Your Name') }}
+            {{ input_field(form, 'date', 'Date of Event', 'form-control date-picker') }}
             <p>Time slots are 30 minutes long and begin at indicated time.</p>
             <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
             <div class="timeslot-picker">

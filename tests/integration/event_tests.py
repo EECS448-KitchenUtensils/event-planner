@@ -68,7 +68,13 @@ class CreatingAnEventWith(IntegrationTestCase):
                 self.assertEqual(res.status_code, 400)
     def test_missing_timeslots(self):
         """Should return 400"""
-        data = {el: "testData" for el in self.form_members}
+        data = self.valid_data()
+        #remove all timeslots
+        tmp_data = {}
+        for key, value in data.items():
+            if not key.startswith("slot"):
+                tmp_data[key] = value
+        data = tmp_data
         res = self.app.post("/new", data=data)
         self.assertEqual(res.status_code, 400)
     def test_empty_members(self):

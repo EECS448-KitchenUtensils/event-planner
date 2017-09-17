@@ -55,8 +55,6 @@ class EventForm(Form):
             setattr(e, field_name, TimeslotField(field_name, [Optional()], timeslot=timeslot))
         e.timeslots = timeslots
         return e
-<<<<<<< HEAD
-=======
 
 class ParticipantForm(Form):
     """
@@ -76,4 +74,3 @@ class ParticipantForm(Form):
             setattr(e, field_name, TimeslotField(field_name, [Optional()], timeslot=timeslot))
         e.timeslots = timeslots
         return e
->>>>>>> Added test for no times selected and fixed displaying errors.

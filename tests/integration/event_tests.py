@@ -14,12 +14,19 @@ class IntegrationTestCase(unittest.TestCase):
         self.db = event_planner.db
         with event_planner.app.app_context():
             event_planner.db.create_all()
-        self.slots = make_slots()
-        self.text_members = ["eventname", "eventdescription", "adminname"]
-        self.form_members = self.text_members + ["date"]
     def tearDown(self):
         with event_planner.app.app_context():
             event_planner.db.drop_all()
+        
+
+class EventTestCase(IntegrationTestCase):
+    """ Test class specific for testing events. """
+    def setUp(self):
+        super().setUp()
+        self.slots = make_slots()
+        self.text_members = ["eventname", "eventdescription", "adminname"]
+        self.form_members = self.text_members + ["date"]
+    
     def valid_data(self):
         """Returns a valid dictionary of form data"""
         data = {el: "testData" for el in self.text_members}
@@ -27,7 +34,7 @@ class IntegrationTestCase(unittest.TestCase):
         data["date"] = "12/31/2101"
         return data
 
-class WhenAnEventIsCreatedSucessfully(IntegrationTestCase):
+class WhenAnEventIsCreatedSucessfully(EventTestCase):
 
     def setUp(self):
         super().setUp()
@@ -49,17 +56,15 @@ class WhenAnEventIsCreatedSucessfully(IntegrationTestCase):
         res = self.app.get("/event/1")
         self.assertEqual(res.status_code, 200)
 
-class BeforeAnEventIsCreated(IntegrationTestCase):
+class BeforeAnEventIsCreated(EventTestCase):
 
     def test_nonexist(self):
         """Should return a 404"""
         res = self.app.get("/event/3")
         self.assertEqual(res.status_code, 404)
 
-class CreatingAnEventWith(IntegrationTestCase):
+class CreatingAnEventWith(EventTestCase):
 
-    def setUp(self):
-        super().setUp()
     def test_missing_members(self):
         """Should return 400"""
         for element in self.form_members:
@@ -94,3 +99,40 @@ class CreatingAnEventWith(IntegrationTestCase):
         data = self.valid_data()
         data[element] = ""
         return self.app.post("/new", data=data)
+
+class ParticipantTestCase(IntegrationTestCase):
+    """ Test class specific to testing participants """
+    def setUp(self):
+        super().setUp()
+        self.slots = make_slots()
+        self.text_members = ["participantname"]
+    
+    def valid_data(self):
+        """Returns a valid dictionary of form data"""
+        data = {el: "testData" for el in self.text_members}
+        data.update(self.slots)
+        return data
+
+class WhenAParticipantIsAddedSuccessfully(ParticipantTestCase):
+    def setUp(self):
+        super().setUp()
+        self.slots["slot_23"] = "1"
+        data=self.valid_data()
+        self.res = self.app.post("/new", data=data)
+    def test_status_code(self):
+        """Should redirect (code 302)"""
+        self.assertEqual(self.res.status_code, 302)
+    def test_participant_count(self):
+        """Should add exactly one participant to the event"""
+        with event_planner.app.app_context():
+            self.assertEqual(len(Event.query.first().participants), 1)
+    def test_redirect_to_current_event(self):
+        """Should redirect back to the current event"""
+        self.assertEqual(urlparse(self.res.location).path, "/event/1")
+
+class CreatingAParticipantWith(CreatingAnEventWith, ParticipantTestCase):
+    pass
+
+
+    
+

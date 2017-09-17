@@ -12,41 +12,6 @@
     </div>
 </div>
 
-<!-- Create particpant table for viewing
-
-   <div class="container">
-       <div class="row">
-           <div class="col-sm-3">
-
-           </div>
-           <div class="col-sm-9">
-               <div class="row">
-               {% for t in event_timeslots %}
-                   <div class="col">
-                       {{ t.time.strftime("%I:%M %p") }}
-                   </div>
-               {% endfor %}
-               </div>
-           </div>
-       </div>
-       {% for participant in participants %}
-            <div class="row">
-                <div class="col-sm-3">
-                    {{ participant.name }}
-                </div>
-
-                <div class="col-sm-9">
-                    <div class="row">
-                    {% for t in participant.timeslots %}
-                        <div class="col">
-                            {{ t.time.strftime("%I:%M %p") }}
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>-->
     <div class="participanttable">
         <div class="container">
             <table style="width: 100%">
@@ -60,13 +25,13 @@
                 {% for p in participants%}
                     <tr>
                         {% for t in event_timeslots %}
+                            <td>
                             {% for pt in p.timeslots%}
                                 {% if pt.time == t.time  %}
-                                    <td>
                                         {{p.name}}
-                                    </td>
                                 {% endif %}
                             {% endfor %}
+                            </td>
                         {% endfor %}
                     </tr>
                 {% endfor %}

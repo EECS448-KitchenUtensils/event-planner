@@ -67,8 +67,11 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    apt update
-    apt install -y python3-pip sqlite3 postgresql libpq-dev
+    echo "deb http://ftp.us.debian.org/debian/ stable main" > /etc/apt/sources.list
+    apt-get update
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get upgrade -y
+    apt-get install -y python3-pip sqlite3 postgresql libpq-dev
     pip3 install -r /vagrant/requirements.txt
     sudo -u postgres psql -c "CREATE USER evplanner WITH PASSWORD 'evplanner';"
     su postgres -c "createdb -O evplanner evplanner"

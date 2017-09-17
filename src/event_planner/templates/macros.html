@@ -1,0 +1,23 @@
+{% macro timeslot_picker(timeslots=all_timeslots) %}
+    <div class="timeslot-picker">
+        {% for i, time in enumerate(timeslots) %}
+            <div class="timeslot">
+                <p class="12-hour-form">{{ time.strftime("%I:%M %p") }}</p>
+                <p class="24-hour-form">{{ time.strftime("%H:%M") }}</p>
+                <input type="hidden" name="slot_{{ i }}" value='0'>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+{% macro display_errors(error_list) %}
+    {% if error_list %}
+    <div class="alert alert-danger alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+        </button>
+        {% for message in error_list %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endmacro %}

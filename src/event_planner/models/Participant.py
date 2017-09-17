@@ -4,18 +4,45 @@ class Participant(db.Model):
     Database model for participants
     """
     id = db.Column(db.Integer, primary_key=True)
-    """Database primary key"""
+    """
+    The primary key for the database
+
+    **Type:** INTEGER PRIMARY KEY
+    """
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-    """Foreign key back to the parent event"""
+    """
+    The key of the `Event` that this `Participant` belongs to
+
+    **Type:** INTEGER FOREIGN KEY
+    """
     event = db.relationship("Event")
-    """Parent event"""
+    """
+    The `Event` that this `Participant` belongs to
+
+    **Related Model:** `event_planner.models.Event`
+    """
     name = db.Column(db.Text)
-    """Name of this event"""
+    """
+    The name of this `Participant`
+
+    **Type:** TEXT
+    """
     timeslots = db.relationship("Timeslot")
-    """Timeslots that this participant is available"""
+    """
+    The `Timeslot`s that belong to this `Participant`
+
+    **Related Models:** `event_planner.models.Timeslot`
+    """
     is_admin = db.Column(db.Boolean)
-    """Stores if participant is admin of their event"""
+    """
+    Whether or not this `Participant` is an admin for its `Event`
+
+    **Type:** BOOLEAN
+    """
     def __init__(self, name, event, is_admin):
+        """
+        Creates a new `Participant` instance
+        """
         self.name = name
         self.event = event
         self.is_admin = is_admin

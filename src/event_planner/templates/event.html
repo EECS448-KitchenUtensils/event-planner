@@ -1,3 +1,5 @@
+{% from 'macros.html' import timeslot_picker %}
+
 <!-- Pull event information -->
 
 <div class="centertext align-items-center">
@@ -10,7 +12,7 @@
     </div>
 </div>
 
-<!-- Create particpant table for viewing -->
+<!-- Create particpant table for viewing
 
    <div class="container">
        <div class="row">
@@ -44,8 +46,33 @@
                 </div>
             </div>
         {% endfor %}
+    </div>-->
+    <div class="participanttable">
+        <div class="container">
+            <table style="width: 100%">
+                <tr>
+                {% for t in event_timeslots %}
+                    <th>
+                        {{ t.time.strftime("%I:%M %p") }}
+                    </th>
+                {% endfor %}
+                </tr>
+                {% for p in participants%}
+                    <tr>
+                        {% for t in event_timeslots %}
+                            {% for pt in p.timeslots%}
+                                {% if pt.time == t.time  %}
+                                    <td>
+                                        {{p.name}}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-
     <button class="btn btn-outline-info col-sm-4 join my-4" onclick="showparticipantform()">Join Event</button>
 
 <!-- Form for adding participant -->
@@ -59,7 +86,7 @@
                 <p>Time slots are 30 minutes long and begin at indicated time.</p>
                 <p>Hold Ctrl or Command(Mac) to select multiple time slots.</p>
             </div>
-            {%include 'timeslot_picker.html'%}
+            {{ timeslot_picker() }}
         </div>
         <input type="submit" value="Submit" class="btn btn-lg btn-primary my-3 float-right">
     </form>

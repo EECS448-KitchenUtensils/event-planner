@@ -1,9 +1,0 @@
-<div class="timeslot-picker">
-    {% for i, time in enumerate(all_timeslots) %}
-        <div class="timeslot">
-            <p class="12-hour-form">{{ time.strftime("%I:%M %p") }}</p>
-            <p class="24-hour-form">{{ time.strftime("%H:%M") }}</p>
-            <input type="hidden" name="slot_{{ i }}" value='0'>
-        </div>
-    {% endfor %}
-</div>

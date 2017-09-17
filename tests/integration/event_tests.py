@@ -2,6 +2,7 @@ import unittest
 from urllib.parse import urlparse
 import event_planner
 from event_planner.models import *
+from datetime import date
 
 def make_slots():
     """Helper func to make the timeslot part of the form data"""
@@ -107,6 +108,10 @@ class ParticipantTestCase(IntegrationTestCase):
         super().setUp()
         self.slots = make_slots()
         self.text_members = ["participantname"]
+        with event_planner.app.app_context():
+            self.event = event_planner.models.Event("test", "test", date(2015, 10, 10))
+            self.db.session.add(self.event)
+            self.db.session.commit()
     
     def valid_data(self):
         """Returns a valid dictionary of form data"""
@@ -119,7 +124,7 @@ class WhenAParticipantIsAddedSuccessfully(ParticipantTestCase):
         super().setUp()
         self.slots["slot_23"] = "1"
         data=self.valid_data()
-        self.res = self.app.post("/new", data=data)
+        self.res = self.app.post("/event/1", data=data)
     def test_status_code(self):
         """Should redirect (code 302)"""
         self.assertEqual(self.res.status_code, 302)

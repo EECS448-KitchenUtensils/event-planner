@@ -37,8 +37,10 @@ def new_post():
         )
         db.session.add(admin)
         for timeslot in form.timeslots:
-            t = models.Timeslot(timeslot, admin)
-            db.session.add(t)
+            val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
+            if val is True:
+                t = models.Timeslot(timeslot, admin)
+                db.session.add(t)
         db.session.commit()
         return redirect(url_for("index"))
     else:

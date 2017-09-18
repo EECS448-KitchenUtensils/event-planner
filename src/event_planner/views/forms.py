@@ -14,7 +14,6 @@ class TimeslotInput(HiddenInput):
     def __call__(self, field, **kwargs):
         class_ = kwargs.pop("class_", "")
         val = field.data[0] if hasattr(field.data, "__len__") else field.default
-        print(val)
         html = ["<div id=\"slot_button_%s\" class=\"timeslot\">" % field._timeslot.strftime("%H%M")]
         html.append("<p class=\"12-hour-form\">%s</p>" % self._timeslot.strftime("%I:%M %p"))
         html.append("<p class=\"24-hour-form\">%s</p>" % self._timeslot.strftime("%H:%M"))

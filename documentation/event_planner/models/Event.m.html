@@ -1045,6 +1045,12 @@ class Event(db.Model):
 
     **Related Model:** `event_planner.models.Participant`
     """
+    @property
+    def admin(self):
+        #TODO: Make this a query, not a for loop
+        for participant in self.participants:
+            if participant.is_admin:
+                return participant
     def __init__(self, title, description, date):
         """
         Creates a new `Event` instance
@@ -1111,6 +1117,12 @@ class Event(db.Model):
 
     **Related Model:** `event_planner.models.Participant`
     """
+    @property
+    def admin(self):
+        #TODO: Make this a query, not a for loop
+        for participant in self.participants:
+            if participant.is_admin:
+                return participant
     def __init__(self, title, description, date):
         """
         Creates a new `Event` instance
@@ -1252,6 +1264,16 @@ class Event(db.Model):
   </div>
   
           <h3>Instance variables</h3>
+            <div class="item">
+            <p id="event_planner.models.Event.Event.admin" class="name">var <span class="ident">admin</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
             <div class="item">
             <p id="event_planner.models.Event.Event.admin_link" class="name">var <span class="ident">admin_link</span></p>
             

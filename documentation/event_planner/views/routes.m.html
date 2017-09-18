@@ -978,9 +978,7 @@ table {
     <li class="mono"><a href="#event_planner.views.routes.new_get">new_get</a></li>
     <li class="mono"><a href="#event_planner.views.routes.new_post">new_post</a></li>
     <li class="mono"><a href="#event_planner.views.routes.show_event_get">show_event_get</a></li>
-    <li class="mono"><a href="#event_planner.views.routes.show_event_get_admin">show_event_get_admin</a></li>
     <li class="mono"><a href="#event_planner.views.routes.show_event_post">show_event_post</a></li>
-    <li class="mono"><a href="#event_planner.views.routes.show_event_post_admin">show_event_post_admin</a></li>
   </ul>
 
     </li>
@@ -1058,8 +1056,10 @@ def new_post():
         )
         db.session.add(admin)
         for timeslot in form.timeslots:
-            t = models.Timeslot(timeslot, admin)
-            db.session.add(t)
+            val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
+            if val is True:
+                t = models.Timeslot(timeslot, admin)
+                db.session.add(t)
         db.session.commit()
         return redirect(url_for("index"))
     else:
@@ -1073,10 +1073,15 @@ def show_event_get(event_id):
     event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
+    event_timeslots_times = []
+    for t in event_timeslots:
+        event_timeslots_times.append(t.time)
 
     participants = list(event.participants)
 
-    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots)
+    form_type = forms.ParticipantForm.with_timeslots(event_timeslots_times)
+    form = form_type()
+    return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
 
 
 @app.route("/event/<event_id>", methods=['POST'])
@@ -1085,68 +1090,21 @@ def show_event_post(event_id=None):
 
     #Get event info
     event = get_event(event_id)
-
-    error = False
-
-    slotdata = []
-    slotdata_error_flag = False
-    for x in range(0,47):
-        if request.form['slot_%s' % x] != 0 or request.form['slot_%s' % x] != 1:
-            slotdata_error_flag == True
-        slotdata.append(request.form['slot_%s' % x])
-    if slotdata_error_flag:
-        error = True
-        flash('Internal parsing error (Timeslot form elements corrupt)')
-
-    name = request.form["participantname"]
-    if name == "" or name.isspace():
-        error = True
-        flash("The participant's name is empty.")
-        
-    if not error:
-
-        #Get Database models ready
-        #Add the participant
-        new_participant = models.Participant(name, event, False)
-        db.session.add(new_participant)
-        #input_list_to_time_list is a function from utils.py
-        times_list = utils.input_list_to_time_list(slotdata)
-        for t in times_list:
-            db.session.add(models.Timeslot(t, new_participant))
-
-
+    admin_timeslots = event.admin.timeslots
+    timeslot_times = [timeslot.time for timeslot in admin_timeslots]
+    form_type = forms.ParticipantForm.with_timeslots(timeslot_times)
+    form = form_type(request.form)
+    if form.validate():
+        participant = models.Participant(form.participantname.data, event, False)
+        db.session.add(participant)
+        for slot in form.timeslots:
+             val = form["slot_%s" % slot.strftime("%H%M")].data[0]
+             if val is True:
+                t = models.Timeslot(slot, participant)
+                db.session.add(t)
         db.session.commit()
 
     return redirect(url_for('show_event_get', event_id=event_id))
-
-@app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
-def show_event_get_admin(event_id=None, event_auth_token=None):
-    """ GET - admin view """
-    #Get event by ID from DB and send to event view
-    event = get_event(event_id)
-
-
-    #Create the dates to show in the template for iterator.
-    daterange = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM','3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
-    daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
-    daterange = enumerate(daterange)
-
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
-
-@app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
-def show_event_post_admin(event_id=None, event_auth_token=None):
-    """ POST - admin changes """
-    # TODO pull in all data about the event and put in the database
-
-    #Get event by ID from DB and send to event view
-    event = get_event(event_id)
-
-    #Create the dates to show in the template for iterator.
-    daterange = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM','3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
-    daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
-    daterange = enumerate(daterange)
-
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
 
 def get_event(id):
     """Utility function to get the first event matching id or None"""
@@ -1261,8 +1219,10 @@ def new_post():
         )
         db.session.add(admin)
         for timeslot in form.timeslots:
-            t = models.Timeslot(timeslot, admin)
-            db.session.add(t)
+            val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
+            if val is True:
+                t = models.Timeslot(timeslot, admin)
+                db.session.add(t)
         db.session.commit()
         return redirect(url_for("index"))
     else:
@@ -1294,42 +1254,15 @@ def show_event_get(event_id):
     event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
+    event_timeslots_times = []
+    for t in event_timeslots:
+        event_timeslots_times.append(t.time)
 
     participants = list(event.participants)
 
-    return render_template('event_view.html', event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-      
-  <div class="item">
-    <div class="name def" id="event_planner.views.routes.show_event_get_admin">
-    <p>def <span class="ident">show_event_get_admin</span>(</p><p>event_id=None, event_auth_token=None)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>GET - admin view</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-event_planner.views.routes.show_event_get_admin', this);">Show source &equiv;</a></p>
-  <div id="source-event_planner.views.routes.show_event_get_admin" class="source">
-    <pre><code>@app.route("/event/<event_id>/<event_auth_token>", methods=['GET'])
-def show_event_get_admin(event_id=None, event_auth_token=None):
-    """ GET - admin view """
-    #Get event by ID from DB and send to event view
-    event = get_event(event_id)
-
-
-    #Create the dates to show in the template for iterator.
-    daterange = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM','3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
-    daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
-    daterange = enumerate(daterange)
-
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
+    form_type = forms.ParticipantForm.with_timeslots(event_timeslots_times)
+    form = form_type()
+    return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
 </code></pre>
   </div>
 </div>
@@ -1355,72 +1288,21 @@ def show_event_post(event_id=None):
 
     #Get event info
     event = get_event(event_id)
-
-    error = False
-
-    slotdata = []
-    slotdata_error_flag = False
-    for x in range(0,47):
-        if request.form['slot_%s' % x] != 0 or request.form['slot_%s' % x] != 1:
-            slotdata_error_flag == True
-        slotdata.append(request.form['slot_%s' % x])
-    if slotdata_error_flag:
-        error = True
-        flash('Internal parsing error (Timeslot form elements corrupt)')
-
-    name = request.form["participantname"]
-    if name == "" or name.isspace():
-        error = True
-        flash("The participant's name is empty.")
-        
-    if not error:
-
-        #Get Database models ready
-        #Add the participant
-        new_participant = models.Participant(name, event, False)
-        db.session.add(new_participant)
-        #input_list_to_time_list is a function from utils.py
-        times_list = utils.input_list_to_time_list(slotdata)
-        for t in times_list:
-            db.session.add(models.Timeslot(t, new_participant))
-
-
+    admin_timeslots = event.admin.timeslots
+    timeslot_times = [timeslot.time for timeslot in admin_timeslots]
+    form_type = forms.ParticipantForm.with_timeslots(timeslot_times)
+    form = form_type(request.form)
+    if form.validate():
+        participant = models.Participant(form.participantname.data, event, False)
+        db.session.add(participant)
+        for slot in form.timeslots:
+             val = form["slot_%s" % slot.strftime("%H%M")].data[0]
+             if val is True:
+                t = models.Timeslot(slot, participant)
+                db.session.add(t)
         db.session.commit()
 
     return redirect(url_for('show_event_get', event_id=event_id))
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-      
-  <div class="item">
-    <div class="name def" id="event_planner.views.routes.show_event_post_admin">
-    <p>def <span class="ident">show_event_post_admin</span>(</p><p>event_id=None, event_auth_token=None)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>POST - admin changes</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-event_planner.views.routes.show_event_post_admin', this);">Show source &equiv;</a></p>
-  <div id="source-event_planner.views.routes.show_event_post_admin" class="source">
-    <pre><code>@app.route("/event/<event_id>/<event_auth_token>", methods=['POST'])
-def show_event_post_admin(event_id=None, event_auth_token=None):
-    """ POST - admin changes """
-    # TODO pull in all data about the event and put in the database
-
-    #Get event by ID from DB and send to event view
-    event = get_event(event_id)
-
-    #Create the dates to show in the template for iterator.
-    daterange = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM','3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
-    daterange24 = ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
-    daterange = enumerate(daterange)
-
-    return render_template('event_manage.html', event=event, event_auth_token=event_auth_token, daterange=daterange, daterange24=daterange24)
 </code></pre>
   </div>
 </div>
@@ -2202,23 +2084,12 @@ extra <code>Form.validate_&lt;fieldname&gt;</code> validators to the field valid
 
     
   
-    <div class="desc"><p>Returns <code>EventForm</code> as if it were declared with the given timeslots</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-event_planner.views.routes.EventFormWith0000_0030_0100_0130_0200_0230_0300_0330_0400_0430_0500_0530_0600_0630_0700_0730_0800_0830_0900_0930_1000_1030_1100_1130_1200_1230_1300_1330_1400_1430_1500_1530_1600_1630_1700_1730_1800_1830_1900_1930_2000_2030_2100_2130_2200_2230_2300_2330.with_timeslots', this);">Show source &equiv;</a></p>
   <div id="source-event_planner.views.routes.EventFormWith0000_0030_0100_0130_0200_0230_0300_0330_0400_0430_0500_0530_0600_0630_0700_0730_0800_0830_0900_0930_1000_1030_1100_1130_1200_1230_1300_1330_1400_1430_1500_1530_1600_1630_1700_1730_1800_1830_1900_1930_2000_2030_2100_2130_2200_2230_2300_2330.with_timeslots" class="source">
     <pre><code>@staticmethod
 def with_timeslots(timeslots=utils.all_timeslots()):
-    """Returns `EventForm` as if it were declared with the given timeslots"""
-    #TODO: Consider using interning since this is probably crazy slow
-    ugly_type_suffix = "_".join([t.strftime("%H%M") for t in timeslots])
-    #When copy.deepcopy() just won't do, simulate inheiritance and learn to love duck typing
-    #This is needed because the copy module can't handle types...
-    e = type("EventFormWith"+ugly_type_suffix, EventForm.__bases__, dict(EventForm.__dict__))
-    for timeslot in timeslots:
-        field_name = "slot_" + timeslot.strftime("%H%M")
-        setattr(e, field_name, TimeslotField(field_name, [], timeslot=timeslot))
-    e.timeslots = timeslots
-    return e
+    return with_timeslots(EventForm, timeslots)
 </code></pre>
   </div>
 </div>

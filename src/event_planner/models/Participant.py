@@ -33,6 +33,12 @@ class Participant(db.Model):
 
     **Related Models:** `event_planner.models.Timeslot`
     """
+    tasks = db.relationship("Task")
+    """
+    The `Task`s that belong to this `Participant`
+
+    **Related Models:** `event_planner.models.Task`
+    """
     is_admin = db.Column(db.Boolean)
     """
     Whether or not this `Participant` is an admin for its `Event`

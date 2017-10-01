@@ -15,11 +15,11 @@ class Timeslot(db.Model):
     
     **Type:** INTEGER FOREIGN KEY
     """
-    time = db.Column(db.Time)
+    datetime = db.Column(db.DateTime)
     """
-    The `datetime.time` that this `Timeslot` started at
+    The `datetime` that this `Timeslot` started at
     
-    **Type:** TIME
+    **Type:** DATETIME
     """
     participant = db.relationship("Participant")
     """
@@ -29,5 +29,5 @@ class Timeslot(db.Model):
     """
     def __init__(self, time, participant):
         """Creates a new `Timeslot` instance"""
-        self.time = time
+        self.datetime = datetime
         self.participant = participant

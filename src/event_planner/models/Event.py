@@ -24,12 +24,6 @@ class Event(db.Model):
 
     **Type:** TEXT
     """
-    date = db.Column(db.Date)
-    """
-    The date that this event takes place on
-
-    **Type:** DATE
-    """
     admin_link = db.Column(db.Text)
     """
     The *magic* code that authenicates the admin for this event

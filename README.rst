@@ -12,7 +12,6 @@ MVC Pattern
         * Fields
             * title: *string*
             * description: *string*
-            * date: *date*
             * id: *integer, primary key*
             * admin_link: *string*
         * Relations
@@ -24,10 +23,15 @@ MVC Pattern
             * is_admin: *boolean*
         * Relations
             * timeslots: *one-to-many*
+            * tasks: *one-to-many*
     * timeslot
         * Fields
             * part_id: *integer, foreign key*
-            * timeslot: *time*
+            * timeslot: *datetime*
+    * tasks
+        *Fields
+            * part_id: *integer, foreign key*
+            * task: *string*
 * Views
 * Controllers
 

@@ -5,13 +5,13 @@ export PYTHONPATH=$(CURDIR)/src:$(CURDIR):/tests
 .PHONY: run docs migrate purge test
 
 run:
-	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask run -h 0.0.0.0
+	EV_CONFIG=$(CURDIR)/src/event_planner/defaults.conf flask run -h 0.0.0.0
 docs:
 	cd documentation && pdoc --html event_planner --overwrite
 migrate:
-	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask migrate
+	EV_CONFIG=$(CURDIR)/src/event_planner/defaults.conf flask migrate
 purge:
-	EV_CONFIG=$(CURDIR)/src/event_planner/demo.conf flask purge-db
+	EV_CONFIG=$(CURDIR)/src/event_planner/defaults.conf flask purge-db
 test:
 	echo $(PYTHONPATH)
 	python3 -m unittest tests.unit

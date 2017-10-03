@@ -1,6 +1,7 @@
 from .. import db, models, app
 from flask import flash, redirect, abort, render_template, url_for, request
 from datetime import date as dt, time
+from datetime import datetime
 from .. import utils
 from . import forms
 
@@ -39,7 +40,7 @@ def new_post():
         for timeslot in form.timeslots:
             val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
             if val is True:
-                t = models.Timeslot(timeslot, admin)
+                t = models.Timeslot(datetime.combine(datetime.today().date(),timeslot), admin)
                 db.session.add(t)
         db.session.commit()
         return redirect(url_for("index"))

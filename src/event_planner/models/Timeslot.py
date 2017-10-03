@@ -27,7 +27,7 @@ class Timeslot(db.Model):
     
     **Related Model:** `event_planner.models.Participant`
     """
-    def __init__(self, time, participant):
+    def __init__(self, datetime, participant):
         """Creates a new `Timeslot` instance"""
         self.datetime = datetime
         self.participant = participant

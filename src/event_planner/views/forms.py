@@ -10,7 +10,7 @@ class TimeslotInput(HiddenInput):
     """
     def __init__(self, timeslot):
         self._timeslot = timeslot
-        super().__init__()
+        super(TimeslotInput, self).__init__()
     def __call__(self, field, **kwargs):
         class_ = kwargs.pop("class_", "")
         val = field.data[0] if hasattr(field.data, "__len__") else field.default
@@ -25,7 +25,7 @@ class TimeslotInput(HiddenInput):
         return "\n".join(html)
 class TimeslotField(BooleanField):
     def __init__(self, label="", validators=None, timeslot=datetime.time(), **kwargs):
-        super().__init__(label, validators, default=False, **kwargs)
+        super(TimeslotField, self).__init__(label, validators, default=False, **kwargs)
         self.widget = TimeslotInput(timeslot)
         self._timeslot = timeslot
     def process_formdata(self, value_list):
@@ -67,4 +67,3 @@ class ParticipantForm(Form):
     @staticmethod
     def with_timeslots(timeslots=utils.all_timeslots()):
         return with_timeslots(ParticipantForm, timeslots)
-

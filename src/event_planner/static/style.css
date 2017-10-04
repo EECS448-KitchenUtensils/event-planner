@@ -64,6 +64,17 @@
     padding: 10px 0;
     background-color: #7FDBFF;
 }
+
+.emptycard {
+	text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 65%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #B33A3A;
+}
+
 .eventcard:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }

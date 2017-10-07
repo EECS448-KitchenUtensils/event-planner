@@ -1,6 +1,6 @@
 Model hierarchy
 ===============
 
-Event -*> Participant -*> Timeslot
+Event -*> Participant -*> Dateslot -*> Timeslot
 
 Event -*> Participant -*> Tasks

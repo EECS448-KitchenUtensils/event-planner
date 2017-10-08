@@ -28,8 +28,7 @@ def new_post():
     if form.validate():
         event = models.Event(
             form.eventname.data,
-            form.eventdescription.data,
-            form.date.data
+            form.eventdescription.data
         )
         db.session.add(event)
 
@@ -40,10 +39,15 @@ def new_post():
         )
         db.session.add(admin)
 
+        dateslot = models.Dateslot(
+            form.date.data,
+            admin
+        )
+
         for timeslot in form.timeslots:
             val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
             if val is True:
-                t = models.Timeslot(datetime.combine(datetime.today().date(),timeslot), admin)
+                t = models.Timeslot(timeslot, dateslot)
                 db.session.add(t)
         db.session.commit()
 
@@ -58,11 +62,12 @@ def show_event_get(event_id):
     #Get event by ID from DB and send to event view
     event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
-    event_timeslots = event_admin[0].timeslots
-    event_timeslots_times = []
+    event_dateslots = event_admin[0].dateslots
+    event_dateslots_times = []
 
-    for t in event_timeslots:
-        event_timeslots_times.append(t.time)
+    for dateslot in event_dateslots
+        for timeslot in dateslot:
+            event_dateslots_times.append(timeslot.time)
 
     participants = list(event.participants)
 

@@ -65,7 +65,7 @@ class EventForm(Form):
     date = DateField("date", [DataRequired('Date is empty or invalid')], format="%m/%d/%Y")
 
     @staticmethod
-    def with_timeslots(timeslots=utils.all_timeslots()):
+    def default_form(timeslots=utils.all_timeslots()):
         return with_timeslots(EventForm, timeslots)
 
 class ParticipantForm(Form):
@@ -75,5 +75,15 @@ class ParticipantForm(Form):
     participantname = StringField("participantname", [DataRequired(message='Participant Name cannot be empty')])
 
     @staticmethod
-    def with_timeslots(timeslots=utils.all_timeslots()):
+    def default_form(timeslots=utils.all_timeslots()):
         return with_timeslots(ParticipantForm, timeslots)
+
+class DateForm(Form):
+    """
+    `Form` used for creating new `Date`s
+    """
+    date = DateField("date", [DataRequired('Date is empty or invalid')], format="%m/%d/%Y")
+
+    @staticmethod
+    def default_form(timeslots=utils.all_timeslots()):
+        return with_timeslots(DateForm, timeslots)

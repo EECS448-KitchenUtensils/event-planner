@@ -15,18 +15,23 @@
     <div class="participanttable">
         <div class="container">
             <div class="timeslot-display">
-                    {% for t in event_timeslots %}
-                        <div class="timeslot" style="height:auto;width:auto;">
-                            <p><strong>{{ t.time.strftime("%I:%M %p") }}</strong></p>
-                            {% for p in participants %}
-                                {% for pt in p.timeslots %}
-                                    {% if pt.time == t.time %}
-                                        <p>{{ p.name }}</p>
-                                    {% endif %}
+                    {% for dateslot in event_dateslots %}
+                        <h5><strong>{{ dateslot.date }}</strong></h5>
+                        {% for timeslot in dateslot.timeslots %}
+                            <div class="timeslot" style="height:auto;width:auto;">
+                                <p><strong>{{ timeslot.time.strftime("%I:%M %p") }}</strong></p>
+                                {% for p in participants %}
+                                    {% for pt in p.timeslots %}
+                                        {% if pt.time == timeslot.time %}
+                                            <p>{{ p.name }}</p>
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </div>  
+                            </div>
+                        {% endfor %}  
                     {% endfor %}
+                    <br><br>
+                    <a href="/event/{{ event['id'] }}/new_dateslot">Add Another Date</a>
             </div>
         </div>
     </div>

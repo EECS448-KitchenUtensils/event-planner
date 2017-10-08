@@ -63,18 +63,16 @@ def show_event_get(event_id):
     event = get_event(event_id) or abort(404) 
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_dateslots = event_admin[0].dateslots
-    event_dateslots_times = []
-
-    for dateslot in event_dateslots
-        for timeslot in dateslot:
-            event_dateslots_times.append(timeslot.time)
+    event_timeslots = reduce((lambda x,y : x + y), map((lambda x : x.timeslots), event_dateslots), [])
+    event_times = map((lambda x : x.time), event_timeslots)
+    event_dateslots_times = event_times
 
     participants = list(event.participants)
 
-    form_type = forms.ParticipantForm.with_timeslots(event_timeslots_times)
+    form_type = forms.ParticipantForm.with_timeslots(event_dateslots_times)
     form = form_type()
 
-    return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
+    return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_dateslots_times)
 
 
 @app.route("/event/<event_id>", methods=['POST'])

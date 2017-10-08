@@ -31,6 +31,13 @@ class Dateslot(db.Model):
     
     **Related Model:** `event_planner.models.Participant`
     """
+
+    timeslots = db.relationship("Timeslot")
+    """
+    The `Timeslot`s that belong to this `Participant`
+
+    **Related Models:** `event_planner.models.Timeslot`
+    """
     
     def __init__(self, date, participant):
         """Creates a new `Dateslot` instance"""

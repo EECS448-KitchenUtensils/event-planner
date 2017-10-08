@@ -1,6 +1,7 @@
 from .. import db, models, app
 from flask import flash, redirect, abort, render_template, url_for, request
 from datetime import date as dt, time
+from datetime import datetime
 from .. import utils
 from . import forms
 
@@ -23,6 +24,7 @@ def new_post():
     """Creates a new event and commits it to the db"""
 
     form = empty_form(request.form)
+
     if form.validate():
         event = models.Event(
             form.eventname.data,
@@ -30,18 +32,21 @@ def new_post():
             form.date.data
         )
         db.session.add(event)
+
         admin = models.Participant(
             form.adminname.data,
             event,
             True
         )
         db.session.add(admin)
+
         for timeslot in form.timeslots:
             val = form["slot_%s" % timeslot.strftime("%H%M")].data[0]
             if val is True:
-                t = models.Timeslot(timeslot, admin)
+                t = models.Timeslot(datetime.combine(datetime.today().date(),timeslot), admin)
                 db.session.add(t)
         db.session.commit()
+
         return redirect(url_for("index"))
     else:
         return render_template("new.html", form=form), 400
@@ -55,6 +60,7 @@ def show_event_get(event_id):
     event_admin = list(filter(lambda x: x.is_admin == True, event.participants))
     event_timeslots = event_admin[0].timeslots
     event_timeslots_times = []
+
     for t in event_timeslots:
         event_timeslots_times.append(t.time)
 
@@ -62,6 +68,7 @@ def show_event_get(event_id):
 
     form_type = forms.ParticipantForm.with_timeslots(event_timeslots_times)
     form = form_type()
+
     return render_template('event_view.html', form=form, event=event, admin=event_admin, participants=participants, event_timeslots=event_timeslots, event_timeslots_times=event_timeslots_times)
 
 
@@ -75,14 +82,18 @@ def show_event_post(event_id=None):
     timeslot_times = [timeslot.time for timeslot in admin_timeslots]
     form_type = forms.ParticipantForm.with_timeslots(timeslot_times)
     form = form_type(request.form)
+
     if form.validate():
         participant = models.Participant(form.participantname.data, event, False)
         db.session.add(participant)
+
         for slot in form.timeslots:
              val = form["slot_%s" % slot.strftime("%H%M")].data[0]
+
              if val is True:
                 t = models.Timeslot(slot, participant)
                 db.session.add(t)
+                
         db.session.commit()
 
     return redirect(url_for('show_event_get', event_id=event_id))

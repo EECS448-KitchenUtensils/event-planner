@@ -7,6 +7,13 @@
         </div>
 
         <!-- List Cards for all events in the database -->
+		{% if not events %}
+			<div class="row">
+				<div class="emptycard my-3">
+					<h4>You have no events!</h4>
+				</div>
+			</div>
+		{% endif %}
         {% for event in events %}
         <a href="/event/{{ event['id'] }}" class="hidden-link">
             <div class="eventcard my-3">
